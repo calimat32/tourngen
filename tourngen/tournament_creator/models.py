@@ -52,7 +52,7 @@ class Team(models.Model):
     e_mail = models.CharField(db_column='E-mail', max_length=45, blank=True) # Field name made lowercase. Field renamed to remove unsuitable characters.
     info = models.TextField(db_column='Info', blank=True) # Field name made lowercase.
     last_updated = models.DateTimeField(db_column='Last_updated') # Field name made lowercase.
-    active = models.BooleanField(db_column='Status') # Field name made lowercase.
+    active = models.BooleanField(db_column='Status',default='true') # Field name made lowercase.
     class Meta:
         managed = False
         db_table = 'Team'
@@ -66,9 +66,9 @@ class Tournament(models.Model):
     date_end = models.DateTimeField(db_column='Date_end', blank=True, null=True) # Field name made lowercase.
     home = models.BooleanField(db_column='Home_and_away') # Field name made lowercase.
     info = models.TextField(db_column='Info', blank=True) # Field name made lowercase.
-    last_updated = models.DateTimeField(db_column='Last_updated') # Field name made lowercase.
-    active = models.BooleanField(db_column='Status') # Field name made lowercase.
-    public = models.BooleanField(db_column='Public') # Field name made lowercase.
+    last_updated = models.DateTimeField(db_column='Last_updated',) # Field name made lowercase.
+    active = models.BooleanField(db_column='Status',default='True') # Field name made lowercase.
+    public = models.BooleanField(db_column='Public',default='True') # Field name made lowercase.
     class Meta:
         managed = False
         db_table = 'Tournament'
