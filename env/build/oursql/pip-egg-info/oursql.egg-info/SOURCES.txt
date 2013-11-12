@@ -1,0 +1,7 @@
+README
+oursqlx/compat.c
+oursqlx/oursql.c
+pip-egg-info/oursql.egg-info/PKG-INFO
+pip-egg-info/oursql.egg-info/SOURCES.txt
+pip-egg-info/oursql.egg-info/dependency_links.txt
+pip-egg-info/oursql.egg-info/top_level.txt
