@@ -57,7 +57,7 @@ WSGI_APPLICATION = 'tourngen.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'mysql_oursql.standard',
+        'ENGINE': 'django.db.backends.mysql',
         'NAME': 'tourngen',
 	'USER': 'root',
 	'PASSWORD': 'password',
