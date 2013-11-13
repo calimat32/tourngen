@@ -66,9 +66,9 @@ class Tournament(models.Model):
     name = models.CharField(db_column='Name', max_length=50) # Field name made lowercase.
     date_start = models.DateTimeField(db_column='Date_start') # Field name made lowercase.
     date_end = models.DateTimeField(db_column='Date_end', blank=True, null=True) # Field name made lowercase.
-    home = models.BooleanField(db_column='Home_and_away') # Field name made lowercase.
+    home_and_away = models.BooleanField(db_column='Home_and_away') # Field name made lowercase.
     info = models.TextField(db_column='Info', blank=True) # Field name made lowercase.
-    last_updated = models.DateTimeField(db_column='Last_updated',default=datetime.now()) # Field name made lowercase.
+    last_updated = models.DateTimeField(db_column='Last_updated',default=datetime.now) # Field name made lowercase.
     active = models.BooleanField(db_column='Status',default='True') # Field name made lowercase.
     public = models.BooleanField(db_column='Public',default='True') # Field name made lowercase.
     class Meta:
