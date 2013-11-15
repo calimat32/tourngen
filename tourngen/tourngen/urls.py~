@@ -11,6 +11,6 @@ urlpatterns = patterns('',
 
     url(r'^admin/', include(admin.site.urls)),
     url(r'^accounts/', include('registration.backends.simple.urls')),
-   url(r'^users/(?P<usuario>[-\w]+)/$', Usuario.as_view())
+ #   url(r'^users/(?P<usuario>[-\w]+)/$', Usuario.as_view())
 	
 )

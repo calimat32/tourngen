@@ -36,8 +36,11 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'tournament_creator',		
+    'tournament_creator',
+    'registration',			
 )
+
+ACCOUNT_ACTIVATION_DAYS = 3
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
