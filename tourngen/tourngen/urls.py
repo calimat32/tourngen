@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
-from tournament_creator import views
+from tournament_creator.views import Usuario
 
 admin.autodiscover()
 
