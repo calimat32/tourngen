@@ -5,5 +5,8 @@ from django.template import RequestContext
 
 class Usuario(TemplateView):
 	def get(self, request, *args, **kwargs):
-		return render_to_response('startup/usuario.html')
+		usuario = request.user 
+		print usuario
+		dic = {'usuario':usuario}
+		return render_to_response('startup/usuario.html',dic)
 

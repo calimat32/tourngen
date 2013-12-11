@@ -14,28 +14,28 @@ from django.db import models
 from datetime import datetime
 
 class Fixture(models.Model):
-    fixture_id = models.IntegerField(db_column='Fixture_id', primary_key=True) # Field name made lowercase.
+    fixture_id = models.AutoField(db_column='Fixture_id', primary_key=True) # Field name made lowercase.
     tournament = models.ForeignKey('Tournament', db_column='Tournament_id') # Field name made lowercase.
     number = models.IntegerField(db_column='Number') # Field name made lowercase.
     info = models.TextField(db_column='Info', blank=True) # Field name made lowercase.
-    last_updated = models.DateTimeField(db_column='Last_updated') # Field name made lowercase.
-    status = models.IntegerField(db_column='Status') # Field name made lowercase.
+    last_updated = models.DateTimeField(db_column='Last_updated',default=datetime.now) # Field name made lowercase.
+    Active = models.BooleanField(db_column='Status',default='true') # Field name made lowercase.
     class Meta:
         managed = False
         db_table = 'Fixture'
 
 class Match(models.Model):
-    match_id = models.IntegerField(db_column='Match_id', primary_key=True) # Field name made lowercase.
+    match_id = models.AutoField(db_column='Match_id', primary_key=True) # Field name made lowercase.
     fixture = models.ForeignKey(Fixture, db_column='Fixture_id') # Field name made lowercase.
     home = models.ForeignKey('Team', db_column='Home_id', related_name='match_home') # Field name made lowercase.
     away = models.ForeignKey('Team', db_column='Away_id') # Field name made lowercase.
     date = models.DateTimeField(db_column='Date', blank=True, null=True) # Field name made lowercase.
     info = models.TextField(db_column='Info', blank=True) # Field name made lowercase.
-    last_updated = models.TextField(db_column='Last_updated') # Field name made lowercase.
-    status = models.IntegerField(db_column='Status') # Field name made lowercase.
+    last_updated = models.DateTimeField(db_column='Last_updated') # Field name made lowercase.
+    active = models.BooleanField(db_column='Status', default='true') # Field name made lowercase.
     score_home = models.IntegerField(db_column='Score_home') # Field name made lowercase.
     score_away = models.IntegerField(db_column='Score_away') # Field name made lowercase.
-    played = models.IntegerField(db_column='Played') # Field name made lowercase.
+    played = models.BooleanField(db_column='Played', default='true') # Field name made lowercase.
     class Meta:
         managed = False
         db_table = 'Match'
@@ -66,7 +66,7 @@ class Tournament(models.Model):
     name = models.CharField(db_column='Name', max_length=50) # Field name made lowercase.
     date_start = models.DateTimeField(db_column='Date_start') # Field name made lowercase.
     date_end = models.DateTimeField(db_column='Date_end', blank=True, null=True) # Field name made lowercase.
-    home = models.BooleanField(db_column='Home_and_away') # Field name made lowercase.
+    home_and_away = models.BooleanField(db_column='Home_and_away') # Field name made lowercase.
     info = models.TextField(db_column='Info', blank=True) # Field name made lowercase.
     last_updated = models.DateTimeField(db_column='Last_updated',default=datetime.now) # Field name made lowercase.
     active = models.BooleanField(db_column='Status',default='True') # Field name made lowercase.
