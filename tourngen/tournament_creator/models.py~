@@ -31,7 +31,7 @@ class Match(models.Model):
     away = models.ForeignKey('Team', db_column='Away_id') # Field name made lowercase.
     date = models.DateTimeField(db_column='Date', blank=True, null=True) # Field name made lowercase.
     info = models.TextField(db_column='Info', blank=True) # Field name made lowercase.
-    last_updated = models.DateTimeField(db_column='Last_updated') # Field name made lowercase.
+    last_updated = models.DateTimeField(db_column='Last_updated',default=datetime.now) # Field name made lowercase.
     active = models.BooleanField(db_column='Status', default='true') # Field name made lowercase.
     score_home = models.IntegerField(db_column='Score_home') # Field name made lowercase.
     score_away = models.IntegerField(db_column='Score_away') # Field name made lowercase.

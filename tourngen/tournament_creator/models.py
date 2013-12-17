@@ -53,7 +53,7 @@ class Team(models.Model):
     name = models.CharField(db_column='Name', max_length=60) # Field name made lowercase.
     e_mail = models.CharField(db_column='E-mail', max_length=45, blank=True) # Field name made lowercase. Field renamed to remove unsuitable characters.
     info = models.TextField(db_column='Info', blank=True) # Field name made lowercase.
-    last_updated = models.DateTimeField(db_column='Last_updated') # Field name made lowercase.
+    last_updated = models.DateTimeField(db_column='Last_updated',default=datetime.now) # Field name made lowercase.
     active = models.BooleanField(db_column='Status',default='true') # Field name made lowercase.
     class Meta:
         managed = False
