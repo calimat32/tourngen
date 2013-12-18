@@ -1,0 +1,23 @@
+
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <title>TournGen</title>
+	<link rel="stylesheet" type="text/css" href="{% static 'assets/css/ui-lightness/jquery-ui-1.10.3.custom.css' %}" >
+	
+	<script src="{% static 'assets/js/jquery-1.9.1.js' %}" > </script>
+	<script src="{% static 'assets/js/jquery-ui-1.10.3.js' %}" > </script>
+        {% block extra_head %}
+        
+        {% endblock %}
+    </head>
+    <body>
+        <div class="content">
+            <p>
+            {% block content %}        
+            {% endblock %}
+            </p>
+        </div>
+    </body>
+</html>

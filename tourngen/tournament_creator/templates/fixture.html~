@@ -1,0 +1,28 @@
+{% extends "registration/base.html" %}
+<!doctype html>
+<html lang="en" > 
+<head>
+	<meta charset="UTF-8" >
+	<title> TournGen </title>
+</head>
+{% comment %}
+**registration/registration_form.html**
+Used to show the form users will fill out to register. By default, has
+the following context:
+
+``form``
+    The registration form. This will be an instance of some subclass
+    of ``django.forms.Form``; consult `Django's forms documentation
+    <http://docs.djangoproject.com/en/dev/topics/forms/>`_ for
+    information on how to display this in a template.
+{% endcomment %}
+{% block content %}
+
+<h1> {{team.name}} </h1>
+<p> {{team.info}} </p>
+
+
+
+
+
+{% endblock %}
