@@ -20,7 +20,7 @@ urlpatterns = patterns('',
 
 url(r'^tournament/', include('tournament_creator.urls')),
 url(r'^team/', include('teams.urls')),
-
+url(r'^fixture/', include('fixtures.urls')),
 
  #   url  (r'^accounts/profile', 
   #     TemplateView.as_view(template_name='profile.html'),

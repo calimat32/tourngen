@@ -19,6 +19,7 @@ urlpatterns = patterns('',
     url  (r'^logout/$', 'django.contrib.auth.views.logout_then_login',     name='logout'),	
 
 url(r'^tournament/', include('tournament_creator.urls')),
+url(r'^team/', include('teams.urls')),
 
 
  #   url  (r'^accounts/profile', 
