@@ -18,6 +18,8 @@ urlpatterns = patterns('',
     
     url  (r'^logout/$', 'django.contrib.auth.views.logout_then_login',     name='logout'),	
 
+(r'^matches/', TemplateView.as_view(template_name="matches.html")),
+
 url(r'^tournament/', include('tournament_creator.urls')),
 url(r'^team/', include('teams.urls')),
 url(r'^fixture/', include('fixtures.urls')),

@@ -1,0 +1,38 @@
+{% extends "teams.html" %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+
+{% block content %}
+
+<h1> Equipos  a</h1>
+<form action="/team/filter/" method="get">
+<select name="torneos">
+    {% for tournament in tournaments %}
+    <option value="team/get/{{tournament.tournament_id}}">{{tournament.name}}</option>
+    {% endfor %}
+</select>
+    <input type="submit" value="Filtrar"></input>
+</form>
+{% for team in teams %}
+<div>
+<h2> <a href="/team/get/{{team.team_id}}/"> {{team.name}} </a> </h2>
+</div>
+
+
+
+{% endfor %}
+
+
+
+
+
+{{tournid}}
+
+{% endblock %}
+
+</body>
+</html>

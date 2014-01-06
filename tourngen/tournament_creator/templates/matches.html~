@@ -3,7 +3,7 @@
 <html lang="en" > 
 <head>
 	<meta charset="UTF-8" >
-	<title> Document </title>
+	<title> TournGen </title>
 </head>
 {% comment %}
 **registration/registration_form.html**
@@ -19,20 +19,15 @@ the following context:
 {% block content %}
 
 
-<form action="/fixture/filter" method="get">
-<select name="torneos">
-    {% for tournament in tournaments %}
-    <option value="{{tournament.tournament_id}}">{{tournament.name}}</option>
-    {% endfor %}
-
+<form method="POST">
+<select name="item_id">
+{% for tournament in tournaments %}
+    <option value="{{ tournament.tournament_id }}">{{ Tournament.objects.get(tournament.name) }}</option>
+{% endfor %}
 </select>
-    <input type="submit" value="Filtrar"></input>
 </form>
 
-<h1> Fixtures </h1>
-{% for fixture in fixtures %}
-<div>
-<h2> <a href="/fixture/get/{{fixture.fixture_id}}/"> {{fixture.number}} </a> </h2>
-</div>
-{% endfor %}
+
+
+
 {% endblock %}

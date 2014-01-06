@@ -5,6 +5,7 @@ from forms import TournamentForm
 from django.http import HttpResponseRedirect 
 from django.core.context_processors import csrf 
 from tournament_creator.models import Tournament
+from tournament_creator.models import Team
 
 
 # Create your views here.
@@ -18,10 +19,13 @@ class Usuario(TemplateView):
 
 def tournaments(request):
 	return render_to_response('tournaments.html',
-				{'tournaments': Tournament.objects.all()})
+				{'tournaments': Tournament.objects.all().filter(active='true')})
 
 def tournament(request,tournament_id=1):
-	return render_to_response('tournament.html', {'tournament':Tournament.objects.get(id=tournament_id) })
+	return render_to_response('tournament.html', {'tournament':Tournament.objects.get(tournament_id=tournament_id) })
+
+def team(request,tournament_id=1):
+	return render_to_response('tournament.html', {'team':Team.objects.all() })
 	
 
 

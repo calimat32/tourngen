@@ -18,9 +18,11 @@ urlpatterns = patterns('',
     
     url  (r'^logout/$', 'django.contrib.auth.views.logout_then_login',     name='logout'),	
 
+   url  (r'^matches$','direct_to_template', {'template_name':'matches.html'} ,    name='matches'),
+
 url(r'^tournament/', include('tournament_creator.urls')),
 url(r'^team/', include('teams.urls')),
-
+url(r'^fixture/', include('fixtures.urls')),
 
  #   url  (r'^accounts/profile', 
   #     TemplateView.as_view(template_name='profile.html'),

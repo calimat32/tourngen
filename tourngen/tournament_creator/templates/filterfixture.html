@@ -1,0 +1,74 @@
+{% extends "fixtures.html" %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+
+{% block content %}
+torneo seleccionado
+
+{{selected_tournament.name}}
+
+<form action="/fixture/matchmaker" method="get">
+<select name="torneos" >
+
+    <option value="{{selected_tournament.tournament_id}}">{{selected_tournament.name}}</option>
+
+
+</select>
+
+
+
+{{unito}}
+<h1> Filtered Fixtures </h1>
+{% for fixture in fixtures %}
+<div>
+
+    <table>
+        <th>
+
+            <a href="/fixture/get/{{fixture.fixture_id}}/"> {{fixture.number}} </a>
+        </th>
+
+<form action="/fixture/matchmaker" method ="get">
+        <td>
+
+
+          <select name="equipolocal">
+              {% for team in teams %}
+               <option value="{{team.team_id}}">{{team.name}}</option>
+            {{team.name}}
+
+              {% endfor %}
+
+           </select>
+
+        </td>
+        <td>vs</td>
+        <td>
+          <select name="equipovisitante">
+              {% for team in teams %}
+               <option value="{{team.team_id}}">{{team.name}}</option>
+            {{team.name}}
+
+              {% endfor %}
+
+           </select>
+
+        </td>
+    <td>
+        <input type = "submit" value="guardar partido"></input>
+    </td>
+</form>
+         {% endfor %}
+    </table>
+
+
+</div>
+{% endblock %}
+
+
+</body>
+</html>

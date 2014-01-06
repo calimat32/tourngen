@@ -12,10 +12,10 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
-from django import template
+#from django import template
  
 #django-staticfiles DRY principle
-template.add_to_builtins('django.contrib.staticfiles.templatetags.staticfiles')
+#template.add_to_builtins('django.contrib.staticfiles.templatetags.staticfiles')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
@@ -41,7 +41,9 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'tournament_creator',
-    'registration',			
+    'registration',
+    'rulez',
+    				
 )
 
 ACCOUNT_ACTIVATION_DAYS = 3
@@ -80,6 +82,12 @@ from django.core.urlresolvers import reverse_lazy
 LOGIN_URL = reverse_lazy('login')
 LOGIN_REDIRECT_URL = reverse_lazy('login')
 LOGOUT_URL = reverse_lazy('logout')
+
+USER_ROLES = (
+	'tourncreator'
+	'scorefiller'
+	'readonly'
+)
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/

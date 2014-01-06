@@ -41,7 +41,9 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'tournament_creator',
-    'registration',			
+    'registration',
+    'rulez',
+    				
 )
 
 ACCOUNT_ACTIVATION_DAYS = 3
@@ -59,6 +61,11 @@ ROOT_URLCONF = 'tourngen.urls'
 
 WSGI_APPLICATION = 'tourngen.wsgi.application'
 
+
+AUTHENTICATION_BACKENDS = [
+            'django.contrib.auth.backends.ModelBackend', # Django's default authbackend
+            'rulez.backends.ObjectPermissionBackend',
+        ]
 
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
@@ -80,6 +87,12 @@ from django.core.urlresolvers import reverse_lazy
 LOGIN_URL = reverse_lazy('login')
 LOGIN_REDIRECT_URL = reverse_lazy('login')
 LOGOUT_URL = reverse_lazy('logout')
+
+USER_ROLES = (
+	'tourncreator'
+	'scorefiller'
+	'readonly'
+)
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
