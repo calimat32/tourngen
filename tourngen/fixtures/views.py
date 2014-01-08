@@ -84,6 +84,23 @@ def creatematches(request):
                 'fixture_filter':Fixture.objects.get(fixture_id=fixturefiltrado),
                 'selected_tournament':Tournament.objects.get(tournament_id=1)}
 
+    matches = list(itertools.combinations(dict['teams'],2))
+    dict['partidos'] = matches
+    home = list()
+    visit = list()
+    for i,j in matches:
+        home.append(i)
+        print "vs"
+        visit.append(j)
+
+    for i in range(len(home)):
+        partidocreado = Match()
+        partidocreado.fixture = Fixture.objects.get(fixture_id=fixturefiltrado)
+        partidocreado.home = Team.objects.get(team_id=home[i].team_id)
+        partidocreado.away = Team.objects.get(team_id=visit[i].team_id)
+        partidocreado.score_home = 0
+        partidocreado.score_away = 0 
+        partidocreado.save()
     return render_to_response('matchmaker.html',
             dict)
 

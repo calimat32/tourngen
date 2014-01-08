@@ -35,7 +35,7 @@ class Match(models.Model):
     active = models.BooleanField(db_column='Status', default='true') # Field name made lowercase.
     score_home = models.IntegerField(db_column='Score_home') # Field name made lowercase.
     score_away = models.IntegerField(db_column='Score_away') # Field name made lowercase.
-    played = models.BooleanField(db_column='Played', default='true') # Field name made lowercase.
+    played = models.BooleanField(db_column='Played', default='false') # Field name made lowercase.
     class Meta:
         managed = False
         db_table = 'Match'
