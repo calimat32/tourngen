@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+    <title></title>
+</head>
+<body>
+
+<table>
+
+    <tr>
+        <th></th>
+    <th>
+        Home
+     </th>
+ <th></th>
+    <th>
+        Away
+    </th>
+</tr>
+{% for partido in partidos %}
+<form action="" method="get">
+
+<tr>
+<td><input type="number" name="partido_id" value="{{partido.match_id}}" size="1"></input></td>
+<td>{{partido.home}}</td>
+<td><input type="number" name="score_local"  size="1" value="{{partido.score_home}}"></input></td>
+<td>{{partido.away}}</td>
+<td><input type="number" name="score_visita" size="1" value="{{partido.score_away}}"></input></td>
+<td><input type ="submit" value="guardar"></input> </td>
+</tr>
+</form>
+{% endfor %}
+
+</table>
+
+</body>
+</html>

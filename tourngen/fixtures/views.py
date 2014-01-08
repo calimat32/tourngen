@@ -99,7 +99,7 @@ def creatematches(request):
         partidocreado.home = Team.objects.get(team_id=home[i].team_id)
         partidocreado.away = Team.objects.get(team_id=visit[i].team_id)
         partidocreado.score_home = 0
-        partidocreado.score_away = 0 
+        partidocreado.score_away = 0
         partidocreado.save()
     return render_to_response('matchmaker.html',
             dict)

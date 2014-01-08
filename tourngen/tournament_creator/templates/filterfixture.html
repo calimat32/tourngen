@@ -9,8 +9,9 @@
 {% block content %}
 torneo seleccionado
 
-partidos:::: {{partidos}}
-
+{%for team in teams %}
+partidos:::: {{team}}
+{% endfor %}
 {{selected_tournament.name}}
 
 <form action="/fixture/matchmaker" method="get">
