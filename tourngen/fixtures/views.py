@@ -4,8 +4,10 @@ from django.template import RequestContext
 from forms import FixtureForm
 from django.http import HttpResponseRedirect 
 from django.core.context_processors import csrf 
-from tournament_creator.models import Fixture, Tournament, Team
+from tournament_creator.models import Fixture, Tournament, Team , Match
 import itertools
+from django.db import connection
+
 
 def create(request):
 	if request.POST:
@@ -43,7 +45,27 @@ def filterfixtures(request):
                 'tournid':request.get_full_path()[-1:]}
 
 
+
+    matches = list(itertools.combinations(dict['teams'],2))
+    dict['partidos'] = matches
+    home = list()
+    visit = list()
+    for i,j in matches:
+        home.append(i)
+        print "vs"
+        visit.append(j)
+
+    for i in range(len(home)):
+        partidocreado = Match()
+
+        dict['local']=home[i]
+        dict['visita']=visit[i]
+
+    dict['visitante'] =visit
+    print "partidos"
+    print home[3]
     print "hello"
+    print visit
     print torneosfiltrados
     return render_to_response('filterfixture.html',
             dict)
@@ -52,11 +74,14 @@ def filterfixtures(request):
 def creatematches(request):
     myrequest = request.GET.get('equipolocal')
     torneosfiltrados = request.GET.get('torneos')
+    fixturefiltrado = request.GET.get('jornada')
     dict = {     'tournaments': Tournament.objects.filter(active="true"),
                  'numberofteams' : Team.objects.filter(tournament_id=torneosfiltrados).count(),
                 'teams': Team.objects.filter(tournament_id=torneosfiltrados),
                 'unito': myrequest,
                 'tournid':request.get_full_path()[-1:],
+                'fixtures': Fixture.objects.filter(tournament_id=torneosfiltrados),
+                'fixture_filter':Fixture.objects.get(fixture_id=fixturefiltrado),
                 'selected_tournament':Tournament.objects.get(tournament_id=1)}
 
     return render_to_response('matchmaker.html',

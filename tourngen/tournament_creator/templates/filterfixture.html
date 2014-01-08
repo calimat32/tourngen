@@ -9,6 +9,8 @@
 {% block content %}
 torneo seleccionado
 
+partidos:::: {{partidos}}
+
 {{selected_tournament.name}}
 
 <form action="/fixture/matchmaker" method="get">
@@ -21,7 +23,7 @@ torneo seleccionado
 
 
 
-{{unito}}
+
 <h1> Filtered Fixtures </h1>
 {% for fixture in fixtures %}
 <div>
@@ -33,7 +35,9 @@ torneo seleccionado
         </th>
 
 <form action="/fixture/matchmaker" method ="get">
-        <td>
+
+    <td> <input type="number" value="{{fixture.fixture_id}}" name="jornada"> </input></td>
+    <td>
 
 
           <select name="equipolocal">

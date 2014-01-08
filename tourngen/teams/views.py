@@ -5,7 +5,7 @@ from django.template import RequestContext
 from forms import TeamForm
 from django.http import HttpResponseRedirect 
 from django.core.context_processors import csrf 
-from tournament_creator.models import Team, Tournament, Fixture
+from tournament_creator.models import Team, Tournament, Fixture, Match
 from django.db.models import Count
 
 
@@ -15,7 +15,6 @@ from django.db.models import Count
 #class ReportarEquipos(ListView):
  #       model = Tournament
   #      template_name = 'teams.html'
-
 
 
 def create(request):
