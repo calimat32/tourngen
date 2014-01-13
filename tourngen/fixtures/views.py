@@ -46,27 +46,13 @@ def filterfixtures(request):
 
 
 
-    matches = list(itertools.combinations(dict['teams'],2))
-    dict['partidos'] = matches
-    home = list()
-    visit = list()
-    for i,j in matches:
-        home.append(i)
-        print "vs"
-        visit.append(j)
 
-    for i in range(len(home)):
-        partidocreado = Match()
 
-        dict['local']=home[i]
-        dict['visita']=visit[i]
-
-    dict['visitante'] =visit
     print "partidos"
-    print home[3]
+
     print "hello"
-    print visit
-    print torneosfiltrados
+
+
     return render_to_response('filterfixture.html',
             dict)
 
@@ -93,6 +79,7 @@ def creatematches(request):
         print "vs"
         visit.append(j)
 
+
     for i in range(len(home)):
         partidocreado = Match()
         partidocreado.fixture = Fixture.objects.get(fixture_id=fixturefiltrado)
@@ -101,6 +88,7 @@ def creatematches(request):
         partidocreado.score_home = 0
         partidocreado.score_away = 0
         partidocreado.save()
+
     return render_to_response('matchmaker.html',
             dict)
 

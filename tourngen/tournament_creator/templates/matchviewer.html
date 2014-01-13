@@ -18,10 +18,10 @@
     </th>
 </tr>
 {% for partido in partidos %}
-<form action="" method="get">
+<form action="/match/success" method="get">
 
 <tr>
-<td><input type="number" name="partido_id" value="{{partido.match_id}}" size="1"></input></td>
+<td><input type="hidden" name="partido_id" value="{{partido.match_id}}" size="1"></input></td>
 <td>{{partido.home}}</td>
 <td><input type="number" name="score_local"  size="1" value="{{partido.score_home}}"></input></td>
 <td>{{partido.away}}</td>
