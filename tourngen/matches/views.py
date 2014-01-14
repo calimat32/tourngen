@@ -82,7 +82,8 @@ def createstandings(request):
     totalgoalagainst = list()
     totalgoalfavor = list()
     homelist = list()
-
+    againsthomescoreslist = list()
+    againstawayscoreslist = list()
 
     for item in range(len(equipos)):
         partidostanding = Match.objects.filter(fixture_id=dict['fixtures'],home=equipos[item].team_id)
@@ -92,19 +93,27 @@ def createstandings(request):
         totalawayscores = partidostandingaway.aggregate(Sum('score_away'))
         againstawayscores = partidostandingaway.aggregate(Sum('score_home'))
         totalhomescoreslist.append(totalhomescores['score_home__sum'])
+        againstawayscoreslist.append(againstawayscores['score_home__sum'])
+        againsthomescoreslist.append(againsthomescores['score_away__sum'])
         totalawayscoreslist.append(totalawayscores['score_away__sum'])
         if totalhomescoreslist[item]== None:
             totalhomescoreslist[item]=0
         if totalawayscoreslist[item] == None:
             totalawayscoreslist[item] = 0
+        if againsthomescoreslist[item] == None:
+            againsthomescoreslist[item] = 0
+        if againstawayscoreslist[item] == None:
+            againstawayscoreslist[item] = 0
 
 
 
     totalgoalfavor = map(operator.add, totalhomescoreslist,totalawayscoreslist)
+    totalgoalagainst = map(operator.add,againsthomescoreslist,againstawayscoreslist)
 
     dict['puntajesvista'] = totalawayscoreslist
     dict['puntajeslocales'] = totalhomescoreslist
     dict['golesafavor'] = totalgoalfavor
+    dict['golesencontra'] = totalgoalagainst
     print totalhomescoreslist
 
 
