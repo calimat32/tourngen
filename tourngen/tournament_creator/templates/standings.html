@@ -4,7 +4,7 @@
     <title></title>
 </head>
 <body>
-    {% for punto in golesdiferencia %}
+    {% for punto in victorias %}
 {{punto}}
     {% endfor %}
 
@@ -17,6 +17,10 @@
 
     <tr>
         <th> Equipo</th>
+        <th>PJ</th>
+        <th>PG</th>
+        <th>PE</th>
+        <th>PP</th>
         <th> GF </th>
         <th> GC </th>
         <th> GD </th>
@@ -25,7 +29,20 @@
 {% for team in teams %}
 <tr>
 <td>{{team.name }}</td>
+
 {% endfor %}
+{% for gol in golesafavor %}
+ <tr>
+    <td> {{gol}}</td>
+  {% endfor %}
+
+  <td></td>
+   <td></td>
+    <td></td>
+
+
+
+
 </tr>
 
 

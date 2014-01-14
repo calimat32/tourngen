@@ -1,8 +1,9 @@
 
 from django.shortcuts import render, render_to_response
 from tournament_creator.models import Team, Tournament, Fixture, Match
-from django.db.models import Sum
+from django.db.models import Sum, Count
 import operator
+import itertools
 
 # Create your views here.
 def listado(request):
@@ -76,18 +77,28 @@ def createstandings(request):
     dict['partidos'] = Match.objects.filter(fixture_id=dict['fixtures'])
 
 
-    totalpoints = 0
+    victories= list()
+    partidosjugadoshomelist = list()
+    partidosjugadosawaylist = list()
+    partidosgandoslist = list()
     totalhomescoreslist = list()
     totalawayscoreslist = list()
     totalgoalagainst = list()
     totalgoalfavor = list()
     homelist = list()
+    partidosgandoslist = list()
     againsthomescoreslist = list()
     againstawayscoreslist = list()
+    dummy = 0
+    partidosganados =0
+    partidosjugadoshome = 0
+    partidosjugadosaway=0
+    partidosjugadoslist = list()
 
     for item in range(len(equipos)):
-        partidostanding = Match.objects.filter(fixture_id=dict['fixtures'],home=equipos[item].team_id)
-        partidostandingaway = Match.objects.filter(fixture_id=dict['fixtures'], away = equipos[item].team_id)
+        #Saca los goles a favor y los goles en contra
+        partidostanding = Match.objects.filter(fixture_id=dict['fixtures'],home=equipos[item].team_id,played="true")
+        partidostandingaway = Match.objects.filter(fixture_id=dict['fixtures'], away = equipos[item].team_id,played="true")
         totalhomescores = partidostanding.aggregate(Sum('score_home'))
         againsthomescores = partidostanding.aggregate(Sum('score_away'))
         totalawayscores = partidostandingaway.aggregate(Sum('score_away'))
@@ -96,6 +107,33 @@ def createstandings(request):
         againstawayscoreslist.append(againstawayscores['score_home__sum'])
         againsthomescoreslist.append(againsthomescores['score_away__sum'])
         totalawayscoreslist.append(totalawayscores['score_away__sum'])
+
+        for otheritem in range(len(partidostanding)):
+            if partidostanding[otheritem].score_home > partidostanding[otheritem].score_away:
+                print "won"
+                partidosganados = partidosganados + 1
+
+                print partidosganados
+            elif partidostanding[otheritem].score_home == partidostanding[otheritem].score_away:
+                print "tie"
+            elif partidostanding[otheritem].score_home < partidostanding[otheritem].score_away:
+                print "lost"
+
+
+
+        for otheritem in range(len(partidostandingaway)):
+            if partidostandingaway[otheritem].score_home < partidostandingaway[otheritem].score_away:
+                print "won visit"
+            elif partidostandingaway[otheritem].score_home == partidostandingaway[otheritem].score_away:
+                print "tie visit"
+            elif partidostandingaway[otheritem].score_home > partidostandingaway[otheritem].score_away:
+                print "lost visit"
+
+        partidosjugadosaway = partidosjugadosaway + 1
+
+        partidosjugadoshomelist.append(partidostanding.count())
+        partidosjugadosawaylist.append(partidostandingaway.count())
+
         if totalhomescoreslist[item]== None:
             totalhomescoreslist[item]=0
         if totalawayscoreslist[item] == None:
@@ -107,6 +145,13 @@ def createstandings(request):
 
 
 
+    partido = Match(fixture_id=dict['fixtures'],home=equipos[0])
+
+
+
+
+    nuevalista = list(itertools.izip(equipos,totalgoalfavor))
+    partidosjugadoslist = map(operator.add,partidosjugadoshomelist,partidosjugadosawaylist)
     totalgoalfavor = map(operator.add, totalhomescoreslist,totalawayscoreslist)
     totalgoalagainst = map(operator.add,againsthomescoreslist,againstawayscoreslist)
     totalgoaldif = map(operator.sub, totalgoalfavor,totalgoalagainst)
@@ -116,8 +161,11 @@ def createstandings(request):
     dict['golesafavor'] = totalgoalfavor
     dict['golesencontra'] = totalgoalagainst
     dict['golesdiferencia'] = totalgoaldif
-    print totalhomescoreslist
+    dict['partidosjugados'] = partidosjugadoslist
+    dict['victorias'] = victories
+    print "papaya"
 
+    print partidosjugadoslist
 
 
 
