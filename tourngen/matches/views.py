@@ -109,11 +109,13 @@ def createstandings(request):
 
     totalgoalfavor = map(operator.add, totalhomescoreslist,totalawayscoreslist)
     totalgoalagainst = map(operator.add,againsthomescoreslist,againstawayscoreslist)
+    totalgoaldif = map(operator.sub, totalgoalfavor,totalgoalagainst)
 
     dict['puntajesvista'] = totalawayscoreslist
     dict['puntajeslocales'] = totalhomescoreslist
     dict['golesafavor'] = totalgoalfavor
     dict['golesencontra'] = totalgoalagainst
+    dict['golesdiferencia'] = totalgoaldif
     print totalhomescoreslist
 
 
