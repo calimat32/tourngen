@@ -46,13 +46,27 @@ def filterfixtures(request):
 
 
 
+    matches = list(itertools.combinations(dict['teams'],2))
+    dict['partidos'] = matches
+    home = list()
+    visit = list()
+    for i,j in matches:
+        home.append(i)
+        print "vs"
+        visit.append(j)
 
+    for i in range(len(matches)):
+        partidocreado = Match()
 
+        dict['local']=home[i]
+        dict['visita']=visit[i]
+
+    dict['visitante'] =visit
     print "partidos"
-
+    print home[3]
     print "hello"
-
-
+    print visit
+    print torneosfiltrados
     return render_to_response('filterfixture.html',
             dict)
 

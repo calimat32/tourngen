@@ -5,6 +5,17 @@
 </head>
 <body>
 
+<form action="/match/filter" method="get">
+<select name="torneos">
+    {% for tournament in tournaments %}
+    <option value="{{tournament.tournament_id}}">{{tournament.name}}</option>
+    {% endfor %}
+
+</select>
+    <input type="submit" value="Filtrar"></input>
+</form>
+
+{% block matchtable %}
 <table>
 
     <tr>
@@ -32,6 +43,6 @@
 {% endfor %}
 
 </table>
-
+{% endblock %}
 </body>
 </html>

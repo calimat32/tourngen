@@ -1,0 +1,57 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+
+<form action="/match/success" method="get">
+<select name="torneos" >
+
+    <option value="{{selected_tournament.tournament_id}}">{{selected_tournament.name}}</option>
+
+</select>
+    {% for punto in puntajeslocales %}
+{{punto}}
+    {% endfor %}
+    <table>
+
+    <tr>
+        <th></th>
+    <th>
+        Home
+     </th>
+ <th></th>
+    <th>
+        Away
+    </th>
+</tr>
+{% for partido in partidos %}
+
+
+<tr>
+<td><input type="hidden" name="partido_id" value="{{partido.match_id}}" size="1"></input></td>
+<td>{{partido.home}}</td>
+<td><input type="number" name="score_local"  size="1" value="{{partido.score_home}}"></input></td>
+<td>{{partido.away}}</td>
+<td><input type="number" name="score_visita" size="1" value="{{partido.score_away}}"></input></td>
+<td><input type ="submit" value="guardar"></input> </td>
+</tr>
+</form>
+{% endfor %}
+
+<form action ="/match/standings" method = get>
+    <input type="hidden" name="torneos" value="{{selected_tournament.tournament_id}}"></input>
+    {% for partido in partidos %}
+    <input type="hidden" name="partido_id" value="{{partido.match_id}}"></input>
+    <input type="hidden" name="score_local" value="{{partido.score_home}}"></input>
+    <input type="hidden" name="score_visita" value="{{partido.score_away}}"></input>
+{% endfor %}
+    <input type="submit" value="crear standings"></input>
+</form>
+
+</table>
+
+</body>
+</html>
