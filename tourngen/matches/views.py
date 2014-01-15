@@ -88,6 +88,7 @@ def createstandings(request):
     partidosjugadoshomelist = list()
     partidosjugadosawaylist = list()
     partidosganadoslist = list()
+    partidosperdidoslist = list()
     totalhomescoreslist = list()
     totalawayscoreslist = list()
     totalgoalagainst = list()
@@ -98,6 +99,8 @@ def createstandings(request):
     againstawayscoreslist = list()
     partidosganadoshomelist = list()
     partidosganadosawaylist = list()
+    partidosperdidoshomelist = list()
+    partidosperdidosawaylist = list()
     dummy = 0
     partidosganadoshome =0
     partidosjugadoshome = 0
@@ -126,9 +129,17 @@ def createstandings(request):
         partidosganadoshome = partidostanding.filter(score_home__gt=F('score_away'))
         partidosganadoshomelist.append(partidosganadoshome.count())
 
+        #Se filtran los partidos que han sido perdidos en casa y se los pone en la lista
+        partidosperdidoshome = partidostanding.filter(score_away__gt=F('score_home'))
+        partidosperdidoshomelist.append(partidosperdidoshome.count())
+
         #Se filtra los partidos que han sido ganados en visita y se los pone a lista
         partidosganadosaway = partidostandingaway.filter(score_away__gt=F('score_home'))
         partidosganadosawaylist.append(partidosganadosaway.count())
+
+        #Se filtra los partidos que se han perdido en visita y se los pone a la lista
+        partidosperdidosaway = partidostandingaway.filter(score_home__gt=F('score_away'))
+        partidosperdidosawaylist.append(partidosperdidosaway.count())
 
 
         #Verifica si el equipo gano, perdio o empato su partido local
@@ -188,6 +199,7 @@ def createstandings(request):
     totalgoalagainst = map(operator.add,againsthomescoreslist,againstawayscoreslist)
     totalgoaldif = map(operator.sub, totalgoalfavor,totalgoalagainst)
     partidosganadoslist = map(operator.add,partidosganadoshomelist,partidosganadosawaylist)
+    partidosperdidoslist = map(operator.add,partidosperdidoshomelist,partidosperdidosawaylist)
 
     dict['puntajesvista'] = totalawayscoreslist
     dict['puntajeslocales'] = totalhomescoreslist
@@ -198,7 +210,7 @@ def createstandings(request):
     dict['victorias'] = victories
     print "papaya"
 
-    print partidosganadoslist
+    print partidosperdidoslist
 
 
 
