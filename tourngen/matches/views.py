@@ -101,6 +101,9 @@ def createstandings(request):
     partidosganadosawaylist = list()
     partidosperdidoshomelist = list()
     partidosperdidosawaylist = list()
+    partidosempatadoshomelist = list()
+    partidosempatadosawaylist = list()
+    partidosempatadoslist = list()
     dummy = 0
     partidosganadoshome =0
     partidosjugadoshome = 0
@@ -141,6 +144,11 @@ def createstandings(request):
         partidosperdidosaway = partidostandingaway.filter(score_home__gt=F('score_away'))
         partidosperdidosawaylist.append(partidosperdidosaway.count())
 
+        #se filtra los partidos que se han empatado
+        partidosempatadoshome = partidostanding.filter(score_home__exact =F('score_away'))
+        partidosempatadoshomelist.append(partidosempatadoshome.count())
+        partidosempatadosaway = partidostandingaway.filter(score_home__exact =F('score_away'))
+        partidosempatadosawaylist.append(partidosempatadosaway.count())
 
         #Verifica si el equipo gano, perdio o empato su partido local
        # for otheritem in range(len(partidostanding)):
@@ -200,6 +208,7 @@ def createstandings(request):
     totalgoaldif = map(operator.sub, totalgoalfavor,totalgoalagainst)
     partidosganadoslist = map(operator.add,partidosganadoshomelist,partidosganadosawaylist)
     partidosperdidoslist = map(operator.add,partidosperdidoshomelist,partidosperdidosawaylist)
+    partidosempatadoslist = map(operator.add,partidosempatadoshomelist,partidosempatadosawaylist)
 
     dict['puntajesvista'] = totalawayscoreslist
     dict['puntajeslocales'] = totalhomescoreslist
@@ -207,10 +216,10 @@ def createstandings(request):
     dict['golesencontra'] = totalgoalagainst
     dict['golesdiferencia'] = totalgoaldif
     dict['partidosjugados'] = partidosjugadoslist
-    dict['victorias'] = victories
+    dict['victorias'] = partidosgandoslist
     print "papaya"
 
-    print partidosperdidoslist
+    print partidosempatadoslist
 
 
 
