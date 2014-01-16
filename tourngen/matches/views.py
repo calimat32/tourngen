@@ -161,7 +161,7 @@ def createstandings(request):
         partidosempatadosawaylist.append(partidosempatadosaway.count())
 
 
-
+         #se crea un diccionario para cada equipo y poder mandarlo al template
         equipodictionary = {'partidosjugados': partidostanding.count()+partidostandingaway.count(),
                             'partidosganados':partidosganadoshome.count()+partidosganadosaway.count(),
                             'partidosperdidos': partidosperdidoshome.count()+partidosperdidosaway.count(),
@@ -191,6 +191,7 @@ def createstandings(request):
         if againstawayscoreslist[item] == None:
             againstawayscoreslist[item] = 0
 
+        #otros valores se agregan al diccionario despues de arreglar las listas
         equipodictionary['golesafavor'] = totalhomescoreslist[item] + totalawayscoreslist[item]
         equipodictionary['golesencontra'] = againstawayscoreslist[item] + againsthomescoreslist[item]
         equipodictionary['golesdiferencia'] = equipodictionary['golesafavor'] - equipodictionary['golesencontra']
@@ -198,53 +199,13 @@ def createstandings(request):
         equipodictionary['teams'] = equipos[item]
 
 
+        #Se agregan todos los diccionarios de los equipos a una lista
         standinglist.append(equipodictionary)
 
 
 
 
-
-
-
-
-
-    #suma las listas necesarias para sacar el numero total de partidos jugados, el numero total de goles a favor
-    #el numero total de goles en contra. Para hacer los goles diferencia resta el nnumero total de goles a favor
-    #menos el numero total de goles en contra.
-    partidosjugadoslist = map(operator.add,partidosjugadoshomelist,partidosjugadosawaylist)
-    totalgoalfavor = map(operator.add, totalhomescoreslist,totalawayscoreslist)
-    totalgoalagainst = map(operator.add,againsthomescoreslist,againstawayscoreslist)
-    totalgoaldif = map(operator.sub, totalgoalfavor,totalgoalagainst)
-    partidosganadoslist = map(operator.add,partidosganadoshomelist,partidosganadosawaylist)
-    partidosperdidoslist = map(operator.add,partidosperdidoshomelist,partidosperdidosawaylist)
-    partidosempatadoslist = map(operator.add,partidosempatadoshomelist,partidosempatadosawaylist)
-    puntosgandoslist = map(lambda x: x * 3, partidosganadoslist)
-    puntolist = map(operator.add,puntosgandoslist,partidosempatadoslist)
-
-    dict['puntajesvista'] = totalawayscoreslist
-    dict['puntajeslocales'] = totalhomescoreslist
-    dict['golesafavor'] = totalgoalfavor
-    #dict['golesencontra'] = totalgoalagainst
-    dict['golesdiferencia'] = totalgoaldif
-    dict['partidosjugados'] = partidosjugadoslist
-    dict['victorias'] = partidosganadoslist
-
-
-    standing = Standing()
-    standing.team = equipos
-    standing.partidosjugados = partidosjugadoslist
-    standing.partidosganados = partidosganadoslist
-    standing.partidosempatados = partidosempatadoslist
-    standing.partidosperdidos = partidosperdidoslist
-    standing.golesafavor = totalgoalfavor
-    standing.golesencontra = totalgoalagainst
-    standing.golesdiferencia = totalgoaldif
-    standing.puntos = puntolist
-
-
-
-
-
+     #se agrega el la lista al diccionario que se va a renderizar en el template
     dict['posiciones'] = standinglist
 
     pprint.pprint(standinglist)
