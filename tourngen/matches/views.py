@@ -1,8 +1,10 @@
 
 from django.shortcuts import render, render_to_response
 from tournament_creator.models import Team, Tournament, Fixture, Match
+from matches.models import Standing
 from django.db.models import Sum, Count, F
 import operator
+import pprint
 import itertools
 
 # Create your views here.
@@ -70,6 +72,13 @@ def filtermatches(request):
     return render_to_response('filtermatch.html',
             dict)
 
+
+def changeNone(element):
+    if element == None:
+        element=0
+        return element
+
+
 #Crea la tabla de posiciones
 def createstandings(request):
     myrequest = "salsa"
@@ -109,6 +118,7 @@ def createstandings(request):
     partidosjugadoshome = 0
     partidosjugadosaway=0
     partidosjugadoslist = list()
+    standinglist = list()
 
     for item in range(len(equipos)):
         #Saca los goles a favor y los goles en contra, partidostanding son todos los partidos que tengan a cada equipo
@@ -150,32 +160,21 @@ def createstandings(request):
         partidosempatadosaway = partidostandingaway.filter(score_home__exact =F('score_away'))
         partidosempatadosawaylist.append(partidosempatadosaway.count())
 
-        #Verifica si el equipo gano, perdio o empato su partido local
-       # for otheritem in range(len(partidostanding)):
-         #   partidostandingwins = partidostanding.filter(score_home__gt = partidostanding[item].score_away)
-          #  print partidostandingwins.count()
+
+
+        equipodictionary = {'partidosjugados': partidostanding.count()+partidostandingaway.count(),
+                            'partidosganados':partidosganadoshome.count()+partidosganadosaway.count(),
+                            'partidosperdidos': partidosperdidoshome.count()+partidosperdidosaway.count(),
+                            'partidosempatados': partidosempatadoshome.count()+partidosempatadosaway.count()
 
 
 
-           # if partidostanding[otheritem].score_home > partidostanding[otheritem].score_away:
-            #    print "won"
-             #   #suma los partidos ganados de local y los agrega a la lista
+                            }
 
 
-           # elif partidostanding[otheritem].score_home == partidostanding[otheritem].score_away:
-            #    print "tie"
-          #  elif partidostanding[otheritem].score_home < partidostanding[otheritem].score_away:
-           #     print "lost"
 
-        #Verifica si    el partido gano, perdio o empato su partido de visita
-        #for otheritem in range(len(partidostandingaway)):
-         #   if partidostandingaway[otheritem].score_home < partidostandingaway[otheritem].score_away:
-          #      print "won visit"
-           # elif partidostandingaway[otheritem].score_home == partidostandingaway[otheritem].score_away:
-            #    print "tie visit"
-           # elif partidostandingaway[otheritem].score_home > partidostandingaway[otheritem].score_away:
-            #    print "lost visit"
-
+       # equipodictionary['golesdiferencia'] = equipodictionary['golesafavor']-equipodictionary['goleencontra']
+        equipodictionary['puntos'] = equipodictionary['partidosganados']*3+equipodictionary['partidosempatados']
 
         #cuenta el numero de partidos activos que han habido localmente
         partidosjugadoshomelist.append(partidostanding.count())
@@ -192,9 +191,19 @@ def createstandings(request):
         if againstawayscoreslist[item] == None:
             againstawayscoreslist[item] = 0
 
+        equipodictionary['golesafavor'] = totalhomescoreslist[item] + totalawayscoreslist[item]
+        equipodictionary['golesencontra'] = againstawayscoreslist[item] + againsthomescoreslist[item]
+        equipodictionary['golesdiferencia'] = equipodictionary['golesafavor'] - equipodictionary['golesencontra']
+        equipodictionary['puntos'] = equipodictionary['partidosganados']*3 + equipodictionary['partidosempatados']
+        equipodictionary['teams'] = equipos[item]
 
 
-    partido = Match(fixture_id=dict['fixtures'],home=equipos[0])
+        standinglist.append(equipodictionary)
+
+
+
+
+
 
 
 
@@ -209,18 +218,36 @@ def createstandings(request):
     partidosganadoslist = map(operator.add,partidosganadoshomelist,partidosganadosawaylist)
     partidosperdidoslist = map(operator.add,partidosperdidoshomelist,partidosperdidosawaylist)
     partidosempatadoslist = map(operator.add,partidosempatadoshomelist,partidosempatadosawaylist)
+    puntosgandoslist = map(lambda x: x * 3, partidosganadoslist)
+    puntolist = map(operator.add,puntosgandoslist,partidosempatadoslist)
 
     dict['puntajesvista'] = totalawayscoreslist
     dict['puntajeslocales'] = totalhomescoreslist
     dict['golesafavor'] = totalgoalfavor
-    dict['golesencontra'] = totalgoalagainst
+    #dict['golesencontra'] = totalgoalagainst
     dict['golesdiferencia'] = totalgoaldif
     dict['partidosjugados'] = partidosjugadoslist
-    dict['victorias'] = partidosgandoslist
-    print "papaya"
+    dict['victorias'] = partidosganadoslist
 
-    print partidosempatadoslist
 
+    standing = Standing()
+    standing.team = equipos
+    standing.partidosjugados = partidosjugadoslist
+    standing.partidosganados = partidosganadoslist
+    standing.partidosempatados = partidosempatadoslist
+    standing.partidosperdidos = partidosperdidoslist
+    standing.golesafavor = totalgoalfavor
+    standing.golesencontra = totalgoalagainst
+    standing.golesdiferencia = totalgoaldif
+    standing.puntos = puntolist
+
+
+
+
+
+    dict['posiciones'] = standinglist
+
+    pprint.pprint(standinglist)
 
 
     return render_to_response('standings.html',

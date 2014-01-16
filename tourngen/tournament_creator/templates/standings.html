@@ -3,14 +3,8 @@
 <head>
     <title></title>
 </head>
-<body>
-    {% for punto in victorias %}
-{{punto}}
-    {% endfor %}
 
-{% for team in teams %}
-{{team.name }}
-{% endfor %}
+<body>
 
 
 <table>
@@ -26,15 +20,23 @@
         <th> GD </th>
         <th> PTS </th>
     </tr>
-{% for team in teams %}
-<tr>
-<td>{{team.name }}</td>
+{% for position in posiciones %}
+    <tr>
+        <td>{{position.teams}}</td>
+        <td>{{position.partidosjugados}}</td>
+        <td>{{position.partidosganados}}</td>
+        <td>{{position.partidosempatados}}</td>
+        <td>{{position.partidosperdidos}}</td>
+        <td>{{position.golesafavor}}</td>
+        <td>{{position.golesencontra}}</td>
+        <td>{{position.golesdiferencia}}</td>
+        <td>{{position.puntos}}</td>
+
+
+
+    </tr>
 
 {% endfor %}
-{% for gol in golesafavor %}
- <tr>
-    <td> {{gol}}</td>
-  {% endfor %}
 
   <td></td>
    <td></td>
@@ -52,16 +54,6 @@
 
 
 
-<table border="1">
-<tr>
-<td>row 1, cell 1</td>
-<td>row 1, cell 2</td>
-</tr>
-<tr>
-<td>row 2, cell 1</td>
-<td>row 2, cell 2</td>
-</tr>
-</table>
 
 </body>
 </html>
