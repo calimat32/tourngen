@@ -1,14 +1,31 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
     <title></title>
+
+    <link rel="stylesheet" type="text/css" href="{% static "assets/css/default.css" %}">
+    <script type="text/javascript" src="{% static "assets/js/jquery-1.9.1.js" %} "></script>
+    <script type="text/javascript" src="{% static "assets/js/jquery.tablesorter.min.js" %} "></script>
+
+
+<script type="text/javascript">
+
+$(document).ready(function()
+    {
+         $("#myTable").tablesorter();
+          $("#myTable").html().appendTo("#mainTable");
+
+    }
+);
+</script>
 </head>
 
 <body>
 
 
-<table>
-
+<table id="myTable" >
+<thead>
     <tr>
         <th> Equipo</th>
         <th>PJ</th>
@@ -20,7 +37,9 @@
         <th> GD </th>
         <th> PTS </th>
     </tr>
+ </thead>
 {% for position in posiciones %}
+   <tbody>
     <tr>
         <td>{{position.teams}}</td>
         <td>{{position.partidosjugados}}</td>
@@ -38,19 +57,10 @@
 
 {% endfor %}
 
-  <td></td>
-   <td></td>
-    <td></td>
-
-
-
-
-</tr>
-
-
-
-
+</tbody>
 </table>
+
+
 
 
 

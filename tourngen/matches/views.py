@@ -206,9 +206,14 @@ def createstandings(request):
 
 
      #se agrega el la lista al diccionario que se va a renderizar en el template
-    dict['posiciones'] = standinglist
 
-    pprint.pprint(standinglist)
+
+    standingorderlist = sorted(standinglist, key = lambda item: (item['puntos'], item['golesdiferencia']),reverse=True )
+
+
+    dict['posiciones'] = standingorderlist
+
+    pprint.pprint(standingorderlist)
 
 
     return render_to_response('standings.html',
