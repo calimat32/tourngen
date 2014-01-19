@@ -17,11 +17,11 @@ def listado(request):
     puntajelocal = request.GET.get('score_local')
     puntajevisita = request.GET.get('score_visita')
 
-
-   # partido = Match.objects.get(match_id=idpartido)
-   # partido.score_home = puntajelocal
-   # partido.score_away = puntajevisita
-   # partido.save()
+   # if Match.objects.get(match_id=idpartido) != None:
+      #  partido = Match.objects.get(match_id=idpartido)
+       # partido.score_home = puntajelocal
+        #partido.score_away = puntajevisita
+       # partido.save()
 
     print idpartido
     dict = {'partidos': Match.objects.all(),
@@ -205,15 +205,16 @@ def createstandings(request):
 
 
 
-     #se agrega el la lista al diccionario que se va a renderizar en el template
 
-
+    #Se ordena la lista de diccionarios para poder mostrarlos ordenados en el template.
     standingorderlist = sorted(standinglist, key = lambda item: (item['puntos'], item['golesdiferencia']),reverse=True )
 
 
+
+    #se agrega el la lista al diccionario que se va a renderizar en el template
     dict['posiciones'] = standingorderlist
 
-    pprint.pprint(standingorderlist)
+
 
 
     return render_to_response('standings.html',
