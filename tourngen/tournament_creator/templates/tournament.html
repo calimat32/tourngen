@@ -10,9 +10,10 @@
 
 <h1> {{tournament.name}} </h1>
 
-
-<p> {{teams.name}} </p>
-
+<form action="/team/create/" method ="get">
+    <input type="hidden" name="torneos" value="{{tournament.tournament_id}}"></input>
+    <input type="submit" value="Agregar Equipos"></input>
+</form>
 
 
 

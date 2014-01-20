@@ -37,9 +37,9 @@ def filterfixtures(request):
     myrequest = request.GET.get('equipolocal')
     torneosfiltrados = request.GET.get('torneos')
     dict = {     'tournaments': Tournament.objects.filter(active="true"),
-                 'numberofteams' : Team.objects.filter(tournament_id=request.get_full_path()[-1:]).count(),
-                'teams': Team.objects.filter(tournament_id=request.get_full_path()[-1:]),
-                'fixtures': Fixture.objects.filter(tournament_id=request.get_full_path()[-1:]),
+                 'numberofteams' : Team.objects.filter(tournament_id=torneosfiltrados).count(),
+                'teams': Team.objects.filter(tournament_id=torneosfiltrados),
+                'fixtures': Fixture.objects.filter(tournament_id=torneosfiltrados),
                 'unito': myrequest,
                 'selected_tournament':Tournament.objects.get(tournament_id=torneosfiltrados),
                 'tournid':request.get_full_path()[-1:]}
@@ -65,7 +65,7 @@ def creatematches(request):
                 'tournid':request.get_full_path()[-1:],
                 'fixtures': Fixture.objects.filter(tournament_id=torneosfiltrados),
                 'fixture_filter':Fixture.objects.get(fixture_id=fixturefiltrado),
-                'selected_tournament':Tournament.objects.get(tournament_id=1)}
+                'selected_tournament':Tournament.objects.get(tournament_id=torneosfiltrados)}
 
 
     #Crea los partidos de forma automatica, si es que el torneo es de ida y vuelta entonces crea permutaciones, si el partido
@@ -88,6 +88,7 @@ def creatematches(request):
           partidocreado.away = Team.objects.get(team_id=visit[i].team_id)
           partidocreado.score_home = 0
           partidocreado.score_away = 0
+          partidocreado.played = "false"
           partidocreado.save()
 
          dict['local']=home[i]
@@ -111,6 +112,7 @@ def creatematches(request):
           partidocreado.away = Team.objects.get(team_id=visit[i].team_id)
           partidocreado.score_home = 0
           partidocreado.score_away = 0
+          partidocreado.played = "false"
           partidocreado.save()
 
          dict['local']=home[i]

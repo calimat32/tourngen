@@ -22,7 +22,7 @@ the following context:
 <form action="/team/filter/" method="get">
 <select name="torneos">
     {% for tournament in tournaments %}
-    <option value="team/get/{{tournament.tournament_id}}">{{tournament.name}}</option>
+    <option value="{{tournament.tournament_id}}">{{tournament.name}}</option>
     {% endfor %}
 </select>
     <input type="submit" value="Filtrar"></input>

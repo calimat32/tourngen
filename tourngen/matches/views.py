@@ -9,6 +9,14 @@ import itertools
 
 # Create your views here.
 
+def editarpartidos(id,scorehome,scoreaway):
+    partido = Match.objects.get(match_id=id)
+    partido.score_home = scorehome
+    partido.score_away = scoreaway
+    partido.played = "true"
+    partido.save()
+
+
 #Muestra el listado de todos los partidos creados
 def listado(request):
 
@@ -17,17 +25,14 @@ def listado(request):
     puntajelocal = request.GET.get('score_local')
     puntajevisita = request.GET.get('score_visita')
 
-   # if Match.objects.get(match_id=idpartido) != None:
-      #  partido = Match.objects.get(match_id=idpartido)
-       # partido.score_home = puntajelocal
-        #partido.score_away = puntajevisita
-       # partido.save()
+    #editarpartidos(idpartido,puntajelocal,puntajevisita)
 
-    print idpartido
+
     dict = {'partidos': Match.objects.all(),
             'tournaments': Tournament.objects.filter(active="true")}
 
     return render_to_response('matchviewer.html',dict)
+
 
 #Muestra el template cuando un partido fue guardado los goles exitosamente.
 def success(request):
@@ -37,16 +42,15 @@ def success(request):
 
     #Obtiene el partido de la id al cual el usuario cambia y despues actualiza sus puntajes,
     #despues lo guarda en la base de datos.
-    partido = Match.objects.get(match_id=idpartido)
-    partido.score_home = puntajelocal
-    partido.score_away = puntajevisita
-    partido.save()
 
-
+    editarpartidos(idpartido,puntajelocal,puntajevisita)
     dict = {'partidos': Match.objects.all(),
             'tournaments': Tournament.objects.filter(active="true")}
 
     return render_to_response('matchsuccess.html',dict)
+
+
+
 
 #Filtra los partidos dependendo del torneo al cual se le es asignado
 def filtermatches(request):

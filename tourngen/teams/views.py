@@ -22,7 +22,7 @@ def create(request):
 		form = TeamForm(request.POST)
 		if form.is_valid():
 			form.save()
-			
+
 			return HttpResponseRedirect('/team/all')
 	else:
 		form = TeamForm()
@@ -30,6 +30,7 @@ def create(request):
 	args.update(csrf(request))
 
 	args['form'] = form
+
 	
 	return render_to_response('create_team.html', args)
 
@@ -43,11 +44,17 @@ def teams(request):
 def filterteams(request):
     torneosfiltrados = request.GET.get('torneos')
     dict = {     'tournaments': Tournament.objects.filter(active="true"),
-                 'numberofteams' : Team.objects.filter(tournament_id=request.get_full_path()[-1:]).count(),
-                'teams': Team.objects.filter(tournament_id=request.get_full_path()[-1:]),
-                'tournid':torneosfiltrados[-1:]}
+                 'numberofteams' : Team.objects.filter(tournament_id=torneosfiltrados).count(),
+                'teams': Team.objects.filter(tournament_id=torneosfiltrados),
+                'tournid':torneosfiltrados}
+
+    #Crea los fixtures necesarios para poder crear los partidos. Si el numero de equipos es impar entonces
+    #crea el mismo numero de fixtures para el numero de equipos. Si el numero de equipos es par entonces
+    #crea el un fixture menos del numero de equipos solicitado.
     count = 1
-    if dict['numberofteams']>0:
+
+
+    if dict['numberofteams']>0 and dict['numberofteams']%2!=0:
         for item in range(dict['numberofteams']):
          fixture = Fixture()
          fixture.tournament = Tournament.objects.get(tournament_id=dict['tournid'])
@@ -56,10 +63,16 @@ def filterteams(request):
          count = count +1
          fixture.save()
 
+    elif dict['numberofteams']>0 and dict['numberofteams']%2==0:
+         for item in range(dict['numberofteams']-1):
+          fixture = Fixture()
+          fixture.tournament = Tournament.objects.get(tournament_id=dict['tournid'])
+          fixture.number = count
+          fixture.Active = "true"
+          count = count +1
+          fixture.save()
 
-    print "hello"
 
-    print count
 
     return render_to_response('filter.html',
             dict)

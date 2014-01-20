@@ -6,12 +6,13 @@
 </head>
 <body>
 
-<form action="/match/success" method="get">
+<form action="" method="get">
 <select name="torneos" >
 
     <option value="{{selected_tournament.tournament_id}}">{{selected_tournament.name}}</option>
 
 </select>
+    </form>
     {% for punto in puntajeslocales %}
 {{punto}}
     {% endfor %}
@@ -29,7 +30,7 @@
 </tr>
 {% for partido in partidos %}
 
-
+<form action="/match/success" method="get">
 <tr>
 <td><input type="hidden" name="partido_id" value="{{partido.match_id}}" size="1"></input></td>
 <td>{{partido.home}}</td>
