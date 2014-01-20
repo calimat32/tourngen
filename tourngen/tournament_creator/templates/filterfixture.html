@@ -26,7 +26,7 @@ partidos:::: {{team}}
 
 
 <h1> Filtered Fixtures </h1>
-{% for fixture in fixtures %}
+
 <div>
 
     <table>
@@ -37,37 +37,11 @@ partidos:::: {{team}}
 
 <form action="/fixture/matchmaker" method ="get">
 
-    <td> <input type="hidden" value="{{fixture.fixture_id}}" name="jornada"> </input></td>
-    <td>
-
-
-          <select name="equipolocal">
-              {% for team in teams %}
-               <option value="{{team.team_id}}">{{team.name}}</option>
-            {{team.name}}
-
-              {% endfor %}
-
-           </select>
-
-        </td>
-        <td>vs</td>
         <td>
-          <select name="equipovisitante">
-              {% for team in teams %}
-               <option value="{{team.team_id}}">{{team.name}}</option>
-            {{team.name}}
-
-              {% endfor %}
-
-           </select>
-
-        </td>
-    <td>
-        <input type = "submit" value="guardar partido"></input>
+        <input type = "submit" value="generar partidos"></input>
     </td>
 </form>
-         {% endfor %}
+
     </table>
 
 

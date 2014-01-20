@@ -13,7 +13,7 @@ def editarpartidos(id,scorehome,scoreaway):
     partido = Match.objects.get(match_id=id)
     partido.score_home = scorehome
     partido.score_away = scoreaway
-    partido.played = "true"
+    partido.played = 1
     partido.save()
 
 
@@ -28,7 +28,7 @@ def listado(request):
     #editarpartidos(idpartido,puntajelocal,puntajevisita)
 
 
-    dict = {'partidos': Match.objects.all(),
+    dict = {'partidos': Match.objects.filter(played="true"),
             'tournaments': Tournament.objects.filter(active="true")}
 
     return render_to_response('matchviewer.html',dict)

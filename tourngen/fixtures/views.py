@@ -62,14 +62,16 @@ def creatematches(request):
                  'numberofteams' : Team.objects.filter(tournament_id=torneosfiltrados).count(),
                 'teams': Team.objects.filter(tournament_id=torneosfiltrados),
                 'unito': myrequest,
-                'tournid':request.get_full_path()[-1:],
+                'tournid':torneosfiltrados,
                 'fixtures': Fixture.objects.filter(tournament_id=torneosfiltrados),
-                'fixture_filter':Fixture.objects.get(fixture_id=fixturefiltrado),
+
                 'selected_tournament':Tournament.objects.get(tournament_id=torneosfiltrados)}
 
 
     #Crea los partidos de forma automatica, si es que el torneo es de ida y vuelta entonces crea permutaciones, si el partido
     # no es de ida y vuelta entonces crea combinaciones.
+
+    count = 1
 
     if Tournament.objects.get(tournament_id=torneosfiltrados).home_and_away == 0:
          matches = list(itertools.combinations(dict['teams'],2))
@@ -81,14 +83,22 @@ def creatematches(request):
           print "vs"
           visit.append(j)
 
+
          for i in range(len(home)):
           partidocreado = Match()
-          partidocreado.fixture = Fixture.objects.get(fixture_id=fixturefiltrado)
+          fixture = Fixture()
+          fixture.tournament = Tournament.objects.get(tournament_id=dict['tournid'])
+          fixture.number = count
+          fixture.Active = "true"
+          count = count +1
+          fixture.save()
+
+          partidocreado.fixture = fixture
           partidocreado.home = Team.objects.get(team_id=home[i].team_id)
           partidocreado.away = Team.objects.get(team_id=visit[i].team_id)
           partidocreado.score_home = 0
           partidocreado.score_away = 0
-          partidocreado.played = "false"
+          partidocreado.played = 0
           partidocreado.save()
 
          dict['local']=home[i]
@@ -107,12 +117,19 @@ def creatematches(request):
 
          for i in range(len(home)):
           partidocreado = Match()
-          partidocreado.fixture = Fixture.objects.get(fixture_id=fixturefiltrado)
+          fixture = Fixture()
+          fixture.tournament = Tournament.objects.get(tournament_id=dict['tournid'])
+          fixture.number = count
+          fixture.Active = "true"
+          count = count +1
+          fixture.save()
+
+          partidocreado.fixture = fixture
           partidocreado.home = Team.objects.get(team_id=home[i].team_id)
           partidocreado.away = Team.objects.get(team_id=visit[i].team_id)
           partidocreado.score_home = 0
           partidocreado.score_away = 0
-          partidocreado.played = "false"
+          partidocreado.played = 0
           partidocreado.save()
 
          dict['local']=home[i]
