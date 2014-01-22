@@ -15,7 +15,7 @@ from rbac.models import RBACRole
 from django.contrib.auth.models import Group, Permission
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.decorators import permission_required
-
+from guardian.shortcuts import assign_perm, get_objects_for_user
 
 
 
@@ -49,8 +49,10 @@ class Usuario(TemplateView):
 
 
 def tournaments(request):
+    tournament = Tournament.objects.all().filter(active='true')
+    permission = Permission.objects.filter(codename='change_tournament')
     return render_to_response('tournaments.html',
-                              {'tournaments': Tournament.objects.all().filter(active='true')})
+                              {'tournaments': get_objects_for_user(request.user,'tournament_creator.change_tournament')})
 
 
 def tournament(request, tournament_id=1):
@@ -62,7 +64,10 @@ def create(request):
     if request.POST:
         form = TournamentForm(request.POST)
         if form.is_valid():
-            form.save()
+            tournament = form.save()
+            #permission = Permission.objects.get(codename='change_tournament')
+            user = request.user
+            assign_perm('change_tournament', user, tournament)
 
             return HttpResponseRedirect('/tournament/all')
     else:

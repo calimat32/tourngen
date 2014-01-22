@@ -4,7 +4,7 @@
     <title></title>
 </head>
 <body>
-
+<h1>Seleccione un torneo </h1>
 <form action="/match/filter" method="get">
 <select name="torneos">
     {% for tournament in tournaments %}
@@ -15,34 +15,7 @@
     <input type="submit" value="Filtrar"></input>
 </form>
 
-{% block matchtable %}
-<table>
 
-    <tr>
-        <th></th>
-    <th>
-        Home
-     </th>
- <th></th>
-    <th>
-        Away
-    </th>
-</tr>
-{% for partido in partidos %}
-<form action="/match/success" method="get">
 
-<tr>
-<td><input type="hidden" name="partido_id" value="{{partido.match_id}}" size="1"></input></td>
-<td>{{partido.home}}</td>
-<td><input type="number" name="score_local"  size="1" value="{{partido.score_home}}"></input></td>
-<td>{{partido.away}}</td>
-<td><input type="number" name="score_visita" size="1" value="{{partido.score_away}}"></input></td>
-<td><input type ="submit" value="guardar"></input> </td>
-</tr>
-</form>
-{% endfor %}
-
-</table>
-{% endblock %}
 </body>
 </html>

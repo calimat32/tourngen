@@ -7,15 +7,30 @@
 <body>
 
 {% block content %}
-torneo seleccionado
 
+<h1>{{selected_tournament.name}}</h1>
+
+<h2>Los equipos son:</h2>
 {%for team in teams %}
-partidos:::: {{team}}
+<li>{{team}}</li>
 {% endfor %}
-{{selected_tournament.name}}
+
+{% if selected_tournament.home_and_away %}
+
+<p></p>
+
+Torneo se creara de ida y vuelta
+
+{% else %}
+
+<p></p>
+Torneo se creara de solo ida
+
+{% endif %}
+
 
 <form action="/fixture/matchmaker" method="get">
-<select name="torneos" >
+<select name="torneos" hidden="true" >
 
     <option value="{{selected_tournament.tournament_id}}">{{selected_tournament.name}}</option>
 
@@ -25,7 +40,7 @@ partidos:::: {{team}}
 
 
 
-<h1> Filtered Fixtures </h1>
+
 
 <div>
 

@@ -7,6 +7,7 @@ from django.http import HttpResponseRedirect
 from django.core.context_processors import csrf 
 from tournament_creator.models import Team, Tournament, Fixture, Match
 from django.db.models import Count
+from guardian.shortcuts import get_objects_for_user
 
 
 # Create your views here.
@@ -37,7 +38,7 @@ def create(request):
 def teams(request):
                return render_to_response('teams.html',
 				{'teams': Team.objects.all(),
-                 'tournaments': Tournament.objects.filter(active="true"),
+                 'tournaments': get_objects_for_user(request.user,'tournament_creator.change_tournament'),
                  'currentURL':Team.objects.count()
                  })
 
