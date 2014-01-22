@@ -43,7 +43,8 @@ INSTALLED_APPS = (
     'tournament_creator',
     'registration',
     'rulez',
-    				
+    'object_permissions',
+    'guardian',
 )
 
 ACCOUNT_ACTIVATION_DAYS = 3
@@ -65,7 +66,11 @@ WSGI_APPLICATION = 'tourngen.wsgi.application'
 AUTHENTICATION_BACKENDS = [
             'django.contrib.auth.backends.ModelBackend', # Django's default authbackend
             'rulez.backends.ObjectPermissionBackend',
+            'object_permissions.backend.ObjectPermBackend',
+            'guardian.backends.ObjectPermissionBackend',
         ]
+
+ANONYMOUS_USER_ID = -1
 
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
@@ -89,9 +94,9 @@ LOGIN_REDIRECT_URL = reverse_lazy('login')
 LOGOUT_URL = reverse_lazy('logout')
 
 USER_ROLES = (
-	'tourncreator'
-	'scorefiller'
-	'readonly'
+	'tourncreator',
+	'scorefiller',
+	'readonly',
 )
 
 # Internationalization

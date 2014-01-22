@@ -1,0 +1,15 @@
+{% extends "registration/base.html" %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+ {% block content %}
+ <form method="POST"> {% csrf_token %}
+    {{form.as_p}}
+     <input type="submit" value="Registrarse">
+ </form>
+ {% endblock %}
+</body>
+</html>

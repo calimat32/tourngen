@@ -3,6 +3,13 @@ from models import Tournament
 import datetime
 from django.forms.extras.widgets import SelectDateWidget
 from django.forms import ModelForm, Form
+from django.contrib.auth.forms import UserCreationForm
+
+
+
+class UserForm(UserCreationForm):
+    pass
+
 
 class TournamentForm(forms.ModelForm):
 	

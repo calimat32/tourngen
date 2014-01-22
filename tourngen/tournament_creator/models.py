@@ -74,6 +74,8 @@ class Tournament(models.Model):
     class Meta:
         managed = False
         db_table = 'Tournament'
+
+
     def __unicode__(self):
 	return self.name
 

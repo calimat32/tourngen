@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
-from tournament_creator.views import Usuario
+from tournament_creator.views import Usuario, Registrarse
 from django.views.generic import TemplateView
 from django.views.generic import RedirectView
 from django.core.urlresolvers import reverse_lazy
@@ -16,7 +16,10 @@ urlpatterns = patterns('',
 
     url  (r'^$', 'django.contrib.auth.views.login', {'template_name':'index.html'} ,    name='login'),	
     
-    url  (r'^logout/$', 'django.contrib.auth.views.logout_then_login',     name='logout'),	
+    url  (r'^logout/$', 'django.contrib.auth.views.logout_then_login',     name='logout'),
+
+    url(r'^register/$', Registrarse.as_view(), name='register'),
+
 
 (r'^matches/', TemplateView.as_view(template_name="matches.html")),
 
@@ -24,6 +27,7 @@ url(r'^tournament/', include('tournament_creator.urls')),
 url(r'^team/', include('teams.urls')),
 url(r'^fixture/', include('fixtures.urls')),
 url(r'^match/',include('matches.urls')),
+
 
  #   url  (r'^accounts/profile', 
   #     TemplateView.as_view(template_name='profile.html'),
