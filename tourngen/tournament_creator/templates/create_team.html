@@ -1,6 +1,6 @@
 {% extends "registration/base.html" %}
 <!doctype html>
-<html lang="en" > 
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
 	<meta charset="UTF-8" >
 	<title> Document </title>
@@ -22,7 +22,22 @@ the following context:
 <h1> Crea tu equipo </h1>
 
 <form action = "" method="post"> {% csrf_token %}
-{{form.as_p}}
+
+    {{form.fields}}
+
+
+
+
+<select name="tournament">
+    {% for tournament in form.fields.tournament%}
+    <option value="{{tournament.tournament_id}}">{{tournament.name}}</option>
+    {% endfor %}
+
+</select> </br>
+
+<label>Name</label>  {{form.name}} </br>
+<label>E-mail</label> {{form.e_mail}} </br>
+<label>Info</label> {{form.info}} </br>
 
 <input type ="submit" name ="submit" value = "Crear Equipo" >
 </form> 

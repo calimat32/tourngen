@@ -15,6 +15,6 @@ class TournamentForm(forms.ModelForm):
 	
 	class Meta:
 		model = Tournament 
-		fields = 	 ('name','date_start','date_end','home_and_away','info','public')
+		fields = 	 ( 'name','date_start','date_end','home_and_away','info','public')
 
 

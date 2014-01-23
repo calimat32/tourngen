@@ -3,85 +3,98 @@ from django.shortcuts import render, render_to_response
 from django.views.generic import TemplateView, ListView
 from django.template import RequestContext
 from forms import TeamForm
-from django.http import HttpResponseRedirect 
-from django.core.context_processors import csrf 
+from django.http import HttpResponseRedirect
+from django.core.context_processors import csrf
 from tournament_creator.models import Team, Tournament, Fixture, Match
 from django.db.models import Count
-from guardian.shortcuts import get_objects_for_user
-
+from guardian.shortcuts import assign_perm, get_objects_for_user
+from django.views.generic import CreateView
+import pprint
 
 # Create your views here.
 
 
 #class ReportarEquipos(ListView):
- #       model = Tournament
-  #      template_name = 'teams.html'
+#       model = Tournament
+#      template_name = 'teams.html'
+
+class RegisterTeam(CreateView):
+    template_name='create_team.html'
+
+    model = Team
+
+    success_url = ('/team/all')
+
 
 
 def create(request):
-	if request.POST:
-		form = TeamForm(request.POST)
-		if form.is_valid():
-			form.save()
+    if request.POST:
+        form = TeamForm(request.POST)
 
-			return HttpResponseRedirect('/team/all')
-	else:
-		form = TeamForm()
-	args = {}
-	args.update(csrf(request))
 
-	args['form'] = form
+        if form.is_valid():
+            form.save()
 
-	
-	return render_to_response('create_team.html', args)
+            return HttpResponseRedirect('/team/all')
+    else:
+        form = TeamForm()
+    args = {}
+    args.update(csrf(request))
+
+    #form.fields['tournament'] = Tournament.objects.all()
+
+    args['form'] = form
+    args['form'].fields['tournament']= get_objects_for_user(request.user , 'tournament_creator.change_tournament')
+    args['tournament'] = Tournament.objects.all()
+
+
+    return render_to_response('create_team.html', args)
+
 
 def teams(request):
-               return render_to_response('teams.html',
-				{'teams': Team.objects.all(),
-                 'tournaments': get_objects_for_user(request.user,'tournament_creator.change_tournament'),
-                 'currentURL':Team.objects.count()
-                 })
+    return render_to_response('teams.html',
+                              {'teams': Team.objects.all(),
+                               'tournaments': Tournament.objects.filter(active="true"),
+                               'currentURL': Team.objects.count()
+                              })
+
 
 def filterteams(request):
     torneosfiltrados = request.GET.get('torneos')
-    dict = {     'tournaments': Tournament.objects.filter(active="true"),
-                 'numberofteams' : Team.objects.filter(tournament_id=torneosfiltrados).count(),
-                'teams': Team.objects.filter(tournament_id=torneosfiltrados),
-                'tournid':torneosfiltrados}
+    dict = {'tournaments': Tournament.objects.filter(active="true"),
+            'numberofteams': Team.objects.filter(tournament_id=torneosfiltrados).count(),
+            'teams': Team.objects.filter(tournament_id=torneosfiltrados),
+            'tournid': torneosfiltrados}
 
     #Crea los fixtures necesarios para poder crear los partidos. Si el numero de equipos es impar entonces
     #crea el mismo numero de fixtures para el numero de equipos. Si el numero de equipos es par entonces
     #crea el un fixture menos del numero de equipos solicitado.
     count = 1
 
-
-    if dict['numberofteams']>0 and dict['numberofteams']%2!=0:
+    if dict['numberofteams'] > 0 and dict['numberofteams'] % 2 != 0:
         for item in range(dict['numberofteams']):
-         fixture = Fixture()
-         fixture.tournament = Tournament.objects.get(tournament_id=dict['tournid'])
-         fixture.number = count
-         fixture.Active = "true"
-         count = count +1
-         fixture.save()
+            fixture = Fixture()
+            fixture.tournament = Tournament.objects.get(tournament_id=dict['tournid'])
+            fixture.number = count
+            fixture.Active = "true"
+            count = count + 1
+            fixture.save()
 
-    elif dict['numberofteams']>0 and dict['numberofteams']%2==0:
-         for item in range(dict['numberofteams']-1):
-          fixture = Fixture()
-          fixture.tournament = Tournament.objects.get(tournament_id=dict['tournid'])
-          fixture.number = count
-          fixture.Active = "true"
-          count = count +1
-          fixture.save()
-
-
+    elif dict['numberofteams'] > 0 and dict['numberofteams'] % 2 == 0:
+        for item in range(dict['numberofteams'] - 1):
+            fixture = Fixture()
+            fixture.tournament = Tournament.objects.get(tournament_id=dict['tournid'])
+            fixture.number = count
+            fixture.Active = "true"
+            count = count + 1
+            fixture.save()
 
     return render_to_response('filter.html',
-            dict)
+                              dict)
 
 
-
-def team(request,team_id=1):
-	return render_to_response('team.html', {'team':Team.objects.get(team_id=team_id) })
+def team(request, team_id=1):
+    return render_to_response('team.html', {'team': Team.objects.get(team_id=team_id)})
 
 
 
