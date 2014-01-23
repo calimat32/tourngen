@@ -76,6 +76,7 @@ class Tournament(models.Model):
         db_table = 'Tournament'
         permissions = (
             ("view_tournament", "Can view a tournament"),
+
         )
 
 

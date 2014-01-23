@@ -23,19 +23,31 @@ from guardian.shortcuts import assign_perm, get_objects_for_user
 
 
 # Create your views here.
-
+#Clase que permite registrar a un usuario y asignarle permisos
 class Registrarse(FormView):
     template_name = 'registration/registrarse.html'
     form_class = UserForm
     success_url = reverse_lazy('register')
 
     def form_valid(self,form):
-        permission = Permission.objects.get(codename='add_tournament')
+        addtournament = Permission.objects.get(codename='add_tournament')
+        changematch = Permission.objects.get(codename='change_match')
 
         user = form.save()
-        user.user_permissions.add(permission)
+        user.user_permissions.add(addtournament)
+        user.user_permissions.add(changematch)
 
         return super(Registrarse,self).form_valid(form)
+
+class RegistrarDigitador(Registrarse):
+    success_url = reverse_lazy('register')
+
+    def form_valid(self,form):
+        changematch = Permission.objects.get(codename="change_match")
+        user = form.save()
+        user.user_permissions.add(changematch)
+
+
 
 
 

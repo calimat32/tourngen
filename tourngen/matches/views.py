@@ -4,6 +4,7 @@ from tournament_creator.models import Team, Tournament, Fixture, Match
 from matches.models import Standing
 from django.db.models import Sum, Count, F
 from guardian.shortcuts import assign_perm, get_objects_for_user
+from django.contrib.auth.decorators import permission_required
 import operator
 import pprint
 import itertools
@@ -20,6 +21,7 @@ def editarpartidos(id,scorehome,scoreaway):
 
 
 #Muestra el listado de todos los partidos creados
+@permission_required('tournament_creator.change_match')
 def listado(request):
 
     #Obtiene los valores obtenidos por el request a traves del metodo get
@@ -31,12 +33,14 @@ def listado(request):
 
 
     dict = {'partidos': Match.objects.filter(played="true"),
+            #muestra los torneos que el usuario tiene
             'tournaments': get_objects_for_user(request.user,'tournament_creator.view_tournament')}
 
     return render_to_response('matchviewer.html',dict)
 
 
 #Muestra el template cuando un partido fue guardado los goles exitosamente.
+@permission_required('tournament_creator.change_match')
 def success(request):
     idpartido = request.GET.get('partido_id')
     puntajelocal = request.GET.get('score_local')
