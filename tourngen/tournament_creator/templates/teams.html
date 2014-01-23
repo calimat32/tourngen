@@ -27,15 +27,8 @@ the following context:
 </select>
     <input type="submit" value="Filtrar"></input>
 </form>
-{% for team in teams %}
-<div>
-<h2> <a href="/team/get/{{team.team_id}}/"> {{team.name}} </a> </h2>
-</div>
 
 
 
-{% endfor %}
-
-{{ currentURL }}
 
 {% endblock %}

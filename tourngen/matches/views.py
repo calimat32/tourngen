@@ -3,9 +3,11 @@ from django.shortcuts import render, render_to_response
 from tournament_creator.models import Team, Tournament, Fixture, Match
 from matches.models import Standing
 from django.db.models import Sum, Count, F
+from guardian.shortcuts import assign_perm, get_objects_for_user
 import operator
 import pprint
 import itertools
+
 
 # Create your views here.
 
@@ -29,7 +31,7 @@ def listado(request):
 
 
     dict = {'partidos': Match.objects.filter(played="true"),
-            'tournaments': Tournament.objects.filter(active="true")}
+            'tournaments': get_objects_for_user(request.user,'tournament_creator.view_tournament')}
 
     return render_to_response('matchviewer.html',dict)
 

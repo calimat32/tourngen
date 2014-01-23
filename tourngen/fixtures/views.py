@@ -7,7 +7,7 @@ from django.core.context_processors import csrf
 from tournament_creator.models import Fixture, Tournament, Team , Match
 import itertools
 from django.db import connection
-
+from guardian.shortcuts import assign_perm, get_objects_for_user
 
 def create(request):
 	if request.POST:
@@ -28,7 +28,7 @@ def create(request):
 def fixtures(request):
 	return render_to_response('fixtures.html',
 				{'fixtures': Fixture.objects.all(),
-                 'tournaments': Tournament.objects.filter(active="true")})
+                 'tournaments': get_objects_for_user(request.user,'tournament_creator.view_tournament')})
 
 def fixture(request,fixture_id=1):
 	return render_to_response('fixture.html', {'fixture':Fixture.objects.get(fixture_id=fixture_id) })
