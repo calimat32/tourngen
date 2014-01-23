@@ -50,9 +50,9 @@ class Usuario(TemplateView):
 
 def tournaments(request):
     tournament = Tournament.objects.all().filter(active='true')
-    permission = Permission.objects.filter(codename='change_tournament')
+    permission = Permission.objects.filter(codename='view_tournament')
     return render_to_response('tournaments.html',
-                              {'tournaments': get_objects_for_user(request.user,'tournament_creator.change_tournament')})
+                              {'tournaments': get_objects_for_user(request.user,'tournament_creator.view_tournament')})
 
 
 def tournament(request, tournament_id=1):
@@ -67,7 +67,7 @@ def create(request):
             tournament = form.save()
             #permission = Permission.objects.get(codename='change_tournament')
             user = request.user
-            assign_perm('change_tournament', user, tournament)
+            assign_perm('view_tournament', user, tournament)
 
             return HttpResponseRedirect('/tournament/all')
     else:

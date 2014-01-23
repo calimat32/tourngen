@@ -44,7 +44,7 @@ def create(request):
     #form.fields['tournament'] = Tournament.objects.all()
 
     args['form'] = form
-    args['form'].fields['tournament']= get_objects_for_user(request.user , 'tournament_creator.change_tournament')
+    args['form'].fields['tournament']= get_objects_for_user(request.user , 'tournament_creator.view_tournament')
     args['tournament'] = Tournament.objects.all()
 
 

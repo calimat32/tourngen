@@ -74,6 +74,9 @@ class Tournament(models.Model):
     class Meta:
         managed = False
         db_table = 'Tournament'
+        permissions = (
+            ("view_tournament", "Can view a tournament"),
+        )
 
 
     def __unicode__(self):
