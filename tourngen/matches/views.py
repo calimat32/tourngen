@@ -1,4 +1,3 @@
-
 from django.shortcuts import render, render_to_response
 from tournament_creator.models import Team, Tournament, Fixture, Match
 from matches.models import Standing
@@ -13,7 +12,7 @@ import itertools
 # Create your views here.
 
 #Funcion para editar los partidos 
-def editarpartidos(id,scorehome,scoreaway):
+def editarpartidos(id, scorehome, scoreaway):
     partido = Match.objects.get(match_id=id)
     partido.score_home = scorehome
     partido.score_away = scoreaway
@@ -24,7 +23,6 @@ def editarpartidos(id,scorehome,scoreaway):
 #Muestra el listado de todos los partidos creados
 @permission_required('tournament_creator.change_match')
 def listado(request):
-
     #Obtiene los valores obtenidos por el request a traves del metodo get
     idpartido = request.GET.get('partido_id')
     puntajelocal = request.GET.get('score_local')
@@ -35,9 +33,18 @@ def listado(request):
 
     dict = {'partidos': Match.objects.filter(played="true"),
             #muestra los torneos que el usuario tiene
-            'tournaments': get_objects_for_user(request.user,'tournament_creator.view_tournament')}
+            'tournaments': get_objects_for_user(request.user, 'tournament_creator.view_tournament')}
 
-    return render_to_response('matchviewer.html',dict)
+    return render_to_response('matchviewer.html', dict)
+
+#Muestra los todoso los torneos que se han mostrado como publicos para genera los standings
+def listadovisita(request):
+    listado(request)
+    dict = {}
+    dict['tournaments'] = Tournament.objects.filter(public=True, active=True)
+    return render_to_response('listadovisita.html',dict)
+
+
 
 
 #Muestra el template cuando un partido fue guardado los goles exitosamente.
@@ -50,61 +57,71 @@ def success(request):
     #Obtiene el partido de la id al cual el usuario cambia y despues actualiza sus puntajes,
     #despues lo guarda en la base de datos.
 
-    editarpartidos(idpartido,puntajelocal,puntajevisita)
+    editarpartidos(idpartido, puntajelocal, puntajevisita)
     dict = {'partidos': Match.objects.all(),
             'tournaments': Tournament.objects.filter(active="true")}
 
-    return render_to_response('matchsuccess.html',dict)
+    return render_to_response('matchsuccess.html', dict)
 
+#Filtra los torneos del los torneos publicos para el usuario visita
+def filterguestmatches(request):
+    myrequest = "salsa"
+    torneosfiltrados = request.GET.get('torneos')
+    dict = {'tournaments': Tournament.objects.filter(active="true"),
+            'numberofteams': Team.objects.filter(tournament_id=request.get_full_path()[-1:]).count(),
+            'teams': Team.objects.filter(tournament_id=torneosfiltrados),
+            'fixtures': Fixture.objects.filter(tournament_id=torneosfiltrados),
+            'unito': myrequest,
+            'selected_tournament': Tournament.objects.get(tournament_id=torneosfiltrados),
 
+            'tournid': request.get_full_path()[-1:]}
 
+    equipos = Team.objects.filter(tournament_id=torneosfiltrados)
+    dict['partidos'] = Match.objects.filter(fixture_id=dict['fixtures'])
+
+    return render_to_response('filterguestmatch.html',
+                              dict)
 
 #Filtra los partidos dependendo del torneo al cual se le es asignado
 def filtermatches(request):
     myrequest = "salsa"
     torneosfiltrados = request.GET.get('torneos')
-    dict = {     'tournaments': Tournament.objects.filter(active="true"),
-                 'numberofteams' : Team.objects.filter(tournament_id=request.get_full_path()[-1:]).count(),
-                'teams': Team.objects.filter(tournament_id=torneosfiltrados),
-                'fixtures': Fixture.objects.filter(tournament_id=torneosfiltrados),
-                'unito': myrequest,
-                'selected_tournament':Tournament.objects.get(tournament_id=torneosfiltrados),
+    dict = {'tournaments': Tournament.objects.filter(active="true"),
+            'numberofteams': Team.objects.filter(tournament_id=request.get_full_path()[-1:]).count(),
+            'teams': Team.objects.filter(tournament_id=torneosfiltrados),
+            'fixtures': Fixture.objects.filter(tournament_id=torneosfiltrados),
+            'unito': myrequest,
+            'selected_tournament': Tournament.objects.get(tournament_id=torneosfiltrados),
 
-                'tournid':request.get_full_path()[-1:]}
+            'tournid': request.get_full_path()[-1:]}
 
     equipos = Team.objects.filter(tournament_id=torneosfiltrados)
     dict['partidos'] = Match.objects.filter(fixture_id=dict['fixtures'])
 
-
-
-
-
-
     return render_to_response('filtermatch.html',
-            dict)
+                              dict)
 
-
-def changeNone(lista,index):
+#Funcion que permite cambiar las entradas vacias de las listas a 0
+def changeNone(lista, index):
     if lista[index] == None:
-        lista[index]=0
-        
+        lista[index] = 0
 
 
 #Crea la tabla de posiciones
 def createstandings(request):
     myrequest = "salsa"
     torneosfiltrados = request.GET.get('torneos')
-    dict = {     'tournaments': Tournament.objects.filter(active="true"),
-                 'teams': Team.objects.filter(tournament_id=torneosfiltrados),
-                'fixtures': Fixture.objects.filter(tournament_id=torneosfiltrados),
-                'unito': myrequest,
-                'selected_tournament':Tournament.objects.get(tournament_id=torneosfiltrados)}
+    dict = {'tournaments': Tournament.objects.filter(active="true"),
+            'teams': Team.objects.filter(tournament_id=torneosfiltrados),
+            'fixtures': Fixture.objects.filter(tournament_id=torneosfiltrados),
+            'unito': myrequest,
+            'selected_tournament': Tournament.objects.get(tournament_id=torneosfiltrados)}
 
     equipos = Team.objects.filter(tournament_id=torneosfiltrados)
     dict['partidos'] = Match.objects.filter(fixture_id=dict['fixtures'])
 
-   #Declaacion de variables que seran usadas despues
-    victories= list()
+    #Declaacion de variables que seran usadas despues
+    victories = list()
     partidosjugadoshomelist = list()
     partidosjugadosawaylist = list()
     partidosganadoslist = list()
@@ -125,17 +142,18 @@ def createstandings(request):
     partidosempatadosawaylist = list()
     partidosempatadoslist = list()
     dummy = 0
-    partidosganadoshome =0
+    partidosganadoshome = 0
     partidosjugadoshome = 0
-    partidosjugadosaway=0
+    partidosjugadosaway = 0
     partidosjugadoslist = list()
     standinglist = list()
 
     for item in range(len(equipos)):
         #Saca los goles a favor y los goles en contra, partidostanding son todos los partidos que tengan a cada equipo
         #como equipo local y partidostandingaway son todos los partidos que tengan a cada equipo como equipo visita.
-        partidostanding = Match.objects.filter(fixture_id=dict['fixtures'],home=equipos[item].team_id,played="true")
-        partidostandingaway = Match.objects.filter(fixture_id=dict['fixtures'], away = equipos[item].team_id,played="true")
+        partidostanding = Match.objects.filter(fixture_id=dict['fixtures'], home=equipos[item].team_id, played="true")
+        partidostandingaway = Match.objects.filter(fixture_id=dict['fixtures'], away=equipos[item].team_id,
+                                                   played="true")
 
         #Hace las sumas de los goles para local y para visita dependiendo de si el equipo es local o es visita
         totalhomescores = partidostanding.aggregate(Sum('score_home'))
@@ -166,26 +184,25 @@ def createstandings(request):
         partidosperdidosawaylist.append(partidosperdidosaway.count())
 
         #se filtra los partidos que se han empatado
-        partidosempatadoshome = partidostanding.filter(score_home__exact =F('score_away'))
+        partidosempatadoshome = partidostanding.filter(score_home__exact=F('score_away'))
         partidosempatadoshomelist.append(partidosempatadoshome.count())
-        partidosempatadosaway = partidostandingaway.filter(score_home__exact =F('score_away'))
+        partidosempatadosaway = partidostandingaway.filter(score_home__exact=F('score_away'))
         partidosempatadosawaylist.append(partidosempatadosaway.count())
 
 
-         #se crea un diccionario para cada equipo y poder mandarlo al template
-        equipodictionary = {'partidosjugados': partidostanding.count()+partidostandingaway.count(),
-                            'partidosganados':partidosganadoshome.count()+partidosganadosaway.count(),
-                            'partidosperdidos': partidosperdidoshome.count()+partidosperdidosaway.count(),
-                            'partidosempatados': partidosempatadoshome.count()+partidosempatadosaway.count()
+        #se crea un diccionario para cada equipo y poder mandarlo al template
+        equipodictionary = {'partidosjugados': partidostanding.count() + partidostandingaway.count(),
+                            'partidosganados': partidosganadoshome.count() + partidosganadosaway.count(),
+                            'partidosperdidos': partidosperdidoshome.count() + partidosperdidosaway.count(),
+                            'partidosempatados': partidosempatadoshome.count() + partidosempatadosaway.count()
+
+
+        }
 
 
 
-                            }
-
-
-
-       # equipodictionary['golesdiferencia'] = equipodictionary['golesafavor']-equipodictionary['goleencontra']
-        equipodictionary['puntos'] = equipodictionary['partidosganados']*3+equipodictionary['partidosempatados']
+        # equipodictionary['golesdiferencia'] = equipodictionary['golesafavor']-equipodictionary['goleencontra']
+        equipodictionary['puntos'] = equipodictionary['partidosganados'] * 3 + equipodictionary['partidosempatados']
 
         #cuenta el numero de partidos activos que han habido localmente
         partidosjugadoshomelist.append(partidostanding.count())
@@ -193,22 +210,17 @@ def createstandings(request):
         partidosjugadosawaylist.append(partidostandingaway.count())
 
         #Para las listas que tengan un valor nulo se cambia el valor nulo a 0
-        changeNone(totalhomescoreslist,item)
-        changeNone(totalawayscoreslist,item)
-        if totalhomescoreslist[item]== None:
-            totalhomescoreslist[item]=0
-        if totalawayscoreslist[item] == None:
-            totalawayscoreslist[item] = 0
-        if againsthomescoreslist[item] == None:
-            againsthomescoreslist[item] = 0
-        if againstawayscoreslist[item] == None:
-            againstawayscoreslist[item] = 0
+        changeNone(totalhomescoreslist, item)
+        changeNone(totalawayscoreslist, item)
+        changeNone(againsthomescoreslist, item)
+        changeNone(againstawayscoreslist, item)
+
 
         #otros valores se agregan al diccionario despues de arreglar las listas
         equipodictionary['golesafavor'] = totalhomescoreslist[item] + totalawayscoreslist[item]
         equipodictionary['golesencontra'] = againstawayscoreslist[item] + againsthomescoreslist[item]
         equipodictionary['golesdiferencia'] = equipodictionary['golesafavor'] - equipodictionary['golesencontra']
-        equipodictionary['puntos'] = equipodictionary['partidosganados']*3 + equipodictionary['partidosempatados']
+        equipodictionary['puntos'] = equipodictionary['partidosganados'] * 3 + equipodictionary['partidosempatados']
         equipodictionary['teams'] = equipos[item]
 
 
@@ -220,15 +232,12 @@ def createstandings(request):
 
 
     #Se ordena la lista de diccionarios para poder mostrarlos ordenados en el template.
-    standingorderlist = sorted(standinglist, key = lambda item: (item['puntos'], item['golesdiferencia']),reverse=True )
+    standingorderlist = sorted(standinglist, key=lambda item: (item['puntos'], item['golesdiferencia']), reverse=True)
 
 
 
     #se agrega el la lista al diccionario que se va a renderizar en el template
     dict['posiciones'] = standingorderlist
 
-
-
-
     return render_to_response('standings.html',
-            dict)
+                              dict)

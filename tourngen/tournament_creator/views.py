@@ -50,10 +50,10 @@ class Registrarse(FormView):
 
 class RegistrarDigitador(CreateView):
     success_url = reverse_lazy('register_dataentry')
-    template_name = 'registration/registrarse.html'
+    template_name = 'registration/registrardigitador.html'
     form_class = UserForm
 
-    
+
     def form_valid(self,form):
         #addtournament = Permission.objects.get(codename='add_tournament')
         #changematch = Permission.objects.get(codename='change_match')
@@ -76,8 +76,8 @@ def AsignarPermisos(request):
     perm = Permission.objects.get(codename='usario_digitador')
     users = User.objects.filter(Q(groups__permissions=perm) | Q(user_permissions=perm) ).distinct()
     dict['users'] = users
-    idtorneo = request.GET.get('tournament')
-    idusuario = request.GET.get('usuario')
+    #idtorneo = request.GET.get('tournament')
+    #idusuario = request.GET.get('usuario')
     #usuario_seleccionado = User.objects.get(id=idusuario)
     #torne_seleccionado = Tournament.objects.get(tournament_id=idtorneo)
     #pprint.pprint(usuario_seleccionado)
@@ -96,6 +96,7 @@ def SuccessPermission(request):
     assign_perm('view_tournament',usuario_seleccionado,torneo_seleccionado)
     usuario_seleccionado.user_permissions.add(changematch)
     return render_to_response('permissionsuccess.html')
+
 
 
 

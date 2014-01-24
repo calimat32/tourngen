@@ -6,7 +6,7 @@
 <body>
 <h1>Seleccione un torneo </h1>
 
-<form action="/match/filter" method="get">
+<form action="/match/guestfilter" method="get">
 <select name="torneos">
     {% for tournament in tournaments %}
     <option value="{{tournament.tournament_id}}">{{tournament.name}}</option>

@@ -1,0 +1,34 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+
+<h1>{{selected_tournament.name}}</h1>
+
+<form action="" method="get">
+<select name="torneos" hidden="true" >
+
+    <option value="{{selected_tournament.tournament_id}}">{{selected_tournament.name}}</option>
+
+</select>
+    </form>
+
+
+
+<form action ="/match/standings" method = get>
+    <input type="hidden" name="torneos" value="{{selected_tournament.tournament_id}}"></input>
+    {% for partido in partidos %}
+    <input type="hidden" name="partido_id" value="{{partido.match_id}}"></input>
+    <input type="hidden" name="score_local" value="{{partido.score_home}}"></input>
+    <input type="hidden" name="score_visita" value="{{partido.score_away}}"></input>
+{% endfor %}
+    <input type="submit" value="ver standings"></input>
+</form>
+
+
+
+</body>
+</html>
