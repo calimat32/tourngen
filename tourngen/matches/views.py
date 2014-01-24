@@ -12,6 +12,7 @@ import itertools
 
 # Create your views here.
 
+#Funcion para editar los partidos 
 def editarpartidos(id,scorehome,scoreaway):
     partido = Match.objects.get(match_id=id)
     partido.score_home = scorehome
@@ -83,10 +84,10 @@ def filtermatches(request):
             dict)
 
 
-def changeNone(element):
-    if element == None:
-        element=0
-        return element
+def changeNone(lista,index):
+    if lista[index] == None:
+        lista[index]=0
+        
 
 
 #Crea la tabla de posiciones
@@ -192,6 +193,8 @@ def createstandings(request):
         partidosjugadosawaylist.append(partidostandingaway.count())
 
         #Para las listas que tengan un valor nulo se cambia el valor nulo a 0
+        changeNone(totalhomescoreslist,item)
+        changeNone(totalawayscoreslist,item)
         if totalhomescoreslist[item]== None:
             totalhomescoreslist[item]=0
         if totalawayscoreslist[item] == None:

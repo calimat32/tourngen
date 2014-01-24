@@ -9,6 +9,7 @@ from tournament_creator.models import Team, Tournament, Fixture, Match
 from django.db.models import Count
 from guardian.shortcuts import assign_perm, get_objects_for_user
 from django.views.generic import CreateView
+from django.contrib.auth.decorators import permission_required
 import pprint
 
 # Create your views here.
@@ -26,7 +27,7 @@ class RegisterTeam(CreateView):
     success_url = ('/team/all')
 
 
-
+@permission_required('tournament_creator.add_team')
 def create(request):
     if request.POST:
         form = TeamForm(request.POST)

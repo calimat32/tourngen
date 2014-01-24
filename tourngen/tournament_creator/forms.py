@@ -1,5 +1,5 @@
 from django import forms
-from models import Tournament
+from models import Tournament, AuthUser
 import datetime
 from django.forms.extras.widgets import SelectDateWidget
 from django.forms import ModelForm, Form

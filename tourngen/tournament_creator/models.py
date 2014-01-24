@@ -39,6 +39,10 @@ class Match(models.Model):
     class Meta:
         managed = False
         db_table = 'Match'
+        permissions = (
+            ("usario_digitador", "Can change a match if it is a data entry user"),
+
+        )
 
 class Privilege(models.Model):
     privilege_id = models.IntegerField(db_column='Privilege_id', primary_key=True) # Field name made lowercase.
@@ -142,6 +146,12 @@ class AuthUser(models.Model):
     class Meta:
         managed = False
         db_table = 'auth_user'
+        permissions = (
+            ("add_dataentry", "Can add a user for data entry"),
+
+
+        )
+
 
 class AuthUserGroups(models.Model):
     id = models.IntegerField(primary_key=True)

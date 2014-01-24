@@ -1,0 +1,23 @@
+{% extends "registration/base.html" %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+ {% block content %}
+ <form method="POST"> {% csrf_token %}
+     <select name="tournament">
+    {% for tournament in form.fields.tournament%}
+    <option value="{{tournament.tournament_id}}">{{tournament.name}}</option>
+    {% endfor %}
+
+</select> </br>
+    <label> Username </label> {{form.username}} </br>
+     <label> Password </label> {{form.password1}} </br>
+     <label>Password again</label> {{form.password2}} </br>
+     <input type="submit" value="Registrarse">
+ </form>
+ {% endblock %}
+</body>
+</html>

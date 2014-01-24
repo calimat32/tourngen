@@ -8,6 +8,7 @@ from tournament_creator.models import Fixture, Tournament, Team , Match
 import itertools
 from django.db import connection
 from guardian.shortcuts import assign_perm, get_objects_for_user
+from django.contrib.auth.decorators import permission_required
 
 def create(request):
 	if request.POST:
@@ -25,6 +26,7 @@ def create(request):
 	
 	return render_to_response('create_fixture.html', args)
 
+@permission_required('tournament_creator.add_match')
 def fixtures(request):
 	return render_to_response('fixtures.html',
 				{'fixtures': Fixture.objects.all(),
