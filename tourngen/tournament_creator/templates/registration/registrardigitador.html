@@ -7,10 +7,20 @@
 <body>
 {{request.user.username}}
  {% block content %}
+
+{% if perms.tournament_creator.add_dataentry and perms.tournament_creator.usuario_rep %}
+
  <form method="POST"> {% csrf_token %}
     {{form.as_p}}
      <input type="submit" value="Registrarse">
  </form>
+
+{% else %}
+
+No tienes permisos para esto. Lo sentimos.
+
+{% endif %}
+
  {% endblock %}
 </body>
 </html>

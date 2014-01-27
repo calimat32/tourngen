@@ -62,6 +62,11 @@ class Team(models.Model):
     class Meta:
         managed = False
         db_table = 'Team'
+        permissions = (
+            ("view_team", "Can view a team"),
+
+        )
+
     def __unicode__(self):
 	return self.name
 
@@ -87,25 +92,6 @@ class Tournament(models.Model):
     def __unicode__(self):
 	return self.name
 
-class TournamentRights(models.Model):
-    tournament = models.ForeignKey(Tournament, db_column='Tournament_id') # Field name made lowercase.
-    user = models.ForeignKey('User', db_column='User_id') # Field name made lowercase.
-    privilege = models.ForeignKey(Privilege, db_column='Privilege_id') # Field name made lowercase.
-    class Meta:
-        managed = False
-        db_table = 'Tournament_Rights'
-
-class User(models.Model):
-    user_id = models.IntegerField(db_column='User_id', primary_key=True) # Field name made lowercase.
-    username = models.CharField(db_column='Username', max_length=60) # Field name made lowercase.
-    password = models.CharField(db_column='Password', max_length=60) # Field name made lowercase.
-    e_mail = models.CharField(db_column='E-mail', max_length=100) # Field name made lowercase. Field renamed to remove unsuitable characters.
-    birthday = models.DateTimeField(db_column='Birthday', blank=True, null=True) # Field name made lowercase.
-    status = models.IntegerField(db_column='Status') # Field name made lowercase.
-    last_updated = models.DateTimeField(db_column='Last_updated') # Field name made lowercase.
-    class Meta:
-        managed = False
-        db_table = 'User'
 
 class AuthGroup(models.Model):
     id = models.IntegerField(primary_key=True)
@@ -148,6 +134,8 @@ class AuthUser(models.Model):
         db_table = 'auth_user'
         permissions = (
             ("add_dataentry", "Can add a user for data entry"),
+            ("add_usuario_rep", "Can add a user that represents a team"),
+            ("is_rep", "Can view a tournament even if it is private"),
 
 
         )

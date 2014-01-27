@@ -8,15 +8,8 @@
 
 {% block content %}
 
-<h1> Equipos  a</h1>
-<form action="/team/filter/" method="get">
-<select name="torneos">
-    {% for tournament in tournaments %}
-    <option value="{{tournament.tournament_id}}">{{tournament.name}}</option>
-    {% endfor %}
-</select>
-    <input type="submit" value="Filtrar"></input>
-</form>
+<h1> Equipos  </h1>
+
 {% for team in teams %}
 <div>
 <h2> <a href="/team/get/{{team.team_id}}/"> {{team.name}} </a> </h2>

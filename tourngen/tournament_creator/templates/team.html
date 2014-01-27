@@ -21,6 +21,11 @@ the following context:
 <h1> {{team.name}} </h1>
 <p> {{team.info}} </p>
 
+<form action="/team/delete" method ="get">
+    <input type="hidden" name="team" value="{{team.team_id}}"></input>
+    <input type="submit" value="eliminar"></input>
+</form>
+
 
 
 

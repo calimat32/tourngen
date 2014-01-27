@@ -34,7 +34,9 @@ def create(request):
 
 
         if form.is_valid():
-            form.save()
+            team = form.save()
+            user = request.user
+            assign_perm('view_team', user, team)
 
             return HttpResponseRedirect('/team/all')
     else:
@@ -51,13 +53,23 @@ def create(request):
 
     return render_to_response('create_team.html', args)
 
-
+@permission_required('tournament_creator.delete_team')
 def teams(request):
     return render_to_response('teams.html',
                               {'teams': Team.objects.all(),
-                               'tournaments': Tournament.objects.filter(active="true"),
+                               'tournaments': get_objects_for_user(request.user,'tournament_creator.view_tournament'),
                                'currentURL': Team.objects.count()
                               })
+
+#Vista para eliminar equipos
+@permission_required('tournament_creator.delete_team')
+def deleteteam(request):
+    dict = {}
+    idteam = request.GET.get('team')
+    team = Team.objects.get(team_id = idteam)
+
+    team.delete()
+    return render_to_response('deleteteam.html',dict)
 
 
 def filterteams(request):
@@ -93,7 +105,7 @@ def filterteams(request):
     return render_to_response('filter.html',
                               dict)
 
-
+@permission_required('tournament_creator.delete_team')
 def team(request, team_id=1):
     return render_to_response('team.html', {'team': Team.objects.get(team_id=team_id)})
 

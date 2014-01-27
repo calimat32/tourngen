@@ -28,6 +28,20 @@ Torneo se creara de solo ida
 
 {% endif %}
 
+{% if numberofteams == 0 %}
+ </br>
+NO hay equipos, por favor crea uno haciendo clic <a href ="/team/create/"> aquí</a>
+{% endif %}
+
+{% if numberofteams == 1 %}
+
+ </br>
+No se puede generar partidos con solo un equipo, por favor crea otro haciendo clic <a href ="/team/create/"> aquí</a>
+
+{% endif %}
+
+
+{% if numberofteams > 1 %}
 
 <form action="/fixture/matchmaker" method="get">
 <select name="torneos" hidden="true" >
@@ -61,6 +75,9 @@ Torneo se creara de solo ida
 
 
 </div>
+
+    {% endif %}
+
 {% endblock %}
 
 

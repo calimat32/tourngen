@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+
+<form method="get" action="/success_permissions_rep">
+
+<label>Equipo</label>
+<select name="tournament">
+
+{% for team in teams %}
+    <option value="{{ team.tournament_id }}">{{ team.name }}</option>
+{% endfor %}
+</select> </br>
+
+    <label>Representante</label>
+<select name="usuario">
+{% for usuario in users %}
+    <option value="{{ usuario.id }}">{{ usuario.username }}</option>
+{% endfor %}
+</select> </br>
+<input type="submit" value="Asignar">
+</form>
+
+
+
+</body>
+</html>

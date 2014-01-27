@@ -44,7 +44,13 @@ def listadovisita(request):
     dict['tournaments'] = Tournament.objects.filter(public=True, active=True)
     return render_to_response('listadovisita.html',dict)
 
+#Vista para mostrar el listado de los partidos asignados al equipo representante
+def listadorep(request):
+    dict = {}
+    tournament = get_objects_for_user(request.user,'tournament_creator.view_tournament')
 
+    dict['tournaments'] = tournament
+    return render_to_response('listadorep.html',dict)
 
 
 #Muestra el template cuando un partido fue guardado los goles exitosamente.
@@ -81,6 +87,25 @@ def filterguestmatches(request):
 
     return render_to_response('filterguestmatch.html',
                               dict)
+
+def filtermymatches(request):
+    myrequest = "salsa"
+    torneosfiltrados = request.GET.get('torneos')
+    dict = {'tournaments': Tournament.objects.filter(active="true"),
+            'numberofteams': Team.objects.filter(tournament_id=request.get_full_path()[-1:]).count(),
+            'teams': Team.objects.filter(tournament_id=torneosfiltrados),
+            'fixtures': Fixture.objects.filter(tournament_id=torneosfiltrados),
+            'unito': myrequest,
+            'selected_tournament': Tournament.objects.get(tournament_id=torneosfiltrados),
+
+            'tournid': request.get_full_path()[-1:]}
+
+    equipos = Team.objects.filter(tournament_id=torneosfiltrados)
+    dict['partidos'] = Match.objects.filter(fixture_id=dict['fixtures'])
+
+    return render_to_response('filterguestmatch.html',
+                              dict)
+
 
 #Filtra los partidos dependendo del torneo al cual se le es asignado
 def filtermatches(request):
