@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+    <title></title>
+</head>
+<body>
+<h1>Seleccione un torneo </h1>
+
+<form action="/match/filteract" method="get">
+<select name="torneos">
+    {% for tournament in tournaments %}
+    <option value="{{tournament.tournament_id}}">{{tournament.name}}</option>
+    {% endfor %}
+
+</select>
+    <input type="submit" value="Filtrar"></input>
+</form>
+
+
+
+</body>
+</html>

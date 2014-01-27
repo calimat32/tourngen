@@ -123,7 +123,7 @@ def creatematches(request):
           fixture.tournament = Tournament.objects.get(tournament_id=dict['tournid'])
           fixture.number = count
           fixture.Active = "true"
-          count = count +1
+          count = count + 1
           fixture.save()
 
           partidocreado.fixture = fixture

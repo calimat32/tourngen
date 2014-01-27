@@ -12,11 +12,12 @@ import itertools
 # Create your views here.
 
 #Funcion para editar los partidos 
-def editarpartidos(id, scorehome, scoreaway):
+def editarpartidos(id, scorehome, scoreaway,jorn):
     partido = Match.objects.get(match_id=id)
     partido.score_home = scorehome
     partido.score_away = scoreaway
     partido.played = 1
+    partido.fixture_id = jorn
     partido.save()
 
 
@@ -36,6 +37,25 @@ def listado(request):
             'tournaments': get_objects_for_user(request.user, 'tournament_creator.view_tournament')}
 
     return render_to_response('matchviewer.html', dict)
+
+#Vista que muestra los partidos para cambairles el fixture
+def listadofixture(request):
+    #Obtiene los valores obtenidos por el request a traves del metodo get
+    idpartido = request.GET.get('partido_id')
+    puntajelocal = request.GET.get('score_local')
+    puntajevisita = request.GET.get('score_visita')
+
+    #editarpartidos(idpartido,puntajelocal,puntajevisita)
+
+
+    dict = {'partidos': Match.objects.filter(played="true"),
+            #muestra los torneos que el usuario tiene
+            'tournaments': get_objects_for_user(request.user, 'tournament_creator.view_tournament')}
+
+    return render_to_response('matchviewerupdate.html', dict)
+
+
+
 
 #Muestra los todoso los torneos que se han mostrado como publicos para genera los standings
 def listadovisita(request):
@@ -59,11 +79,12 @@ def success(request):
     idpartido = request.GET.get('partido_id')
     puntajelocal = request.GET.get('score_local')
     puntajevisita = request.GET.get('score_visita')
-
+    #fecha = request.GET.get('fecha_partido')
+    jorn1 = request.GET.get('jornada')
     #Obtiene el partido de la id al cual el usuario cambia y despues actualiza sus puntajes,
     #despues lo guarda en la base de datos.
 
-    editarpartidos(idpartido, puntajelocal, puntajevisita)
+    editarpartidos(idpartido, puntajelocal, puntajevisita,jorn1)
     dict = {'partidos': Match.objects.all(),
             'tournaments': Tournament.objects.filter(active="true")}
 
@@ -123,8 +144,30 @@ def filtermatches(request):
     equipos = Team.objects.filter(tournament_id=torneosfiltrados)
     dict['partidos'] = Match.objects.filter(fixture_id=dict['fixtures'])
 
+
     return render_to_response('filtermatch.html',
                               dict)
+
+#Vista para los partidos filtrados para actualizar los fixture
+def filtermatchesact(request):
+    myrequest = "salsa"
+    torneosfiltrados = request.GET.get('torneos')
+    dict = {'tournaments': Tournament.objects.filter(active="true"),
+            'numberofteams': Team.objects.filter(tournament_id=request.get_full_path()[-1:]).count(),
+            'teams': Team.objects.filter(tournament_id=torneosfiltrados),
+            'fixtures': Fixture.objects.filter(tournament_id=torneosfiltrados),
+            'unito': myrequest,
+            'selected_tournament': Tournament.objects.get(tournament_id=torneosfiltrados),
+
+            'tournid': request.get_full_path()[-1:]}
+
+    equipos = Team.objects.filter(tournament_id=torneosfiltrados)
+    dict['partidos'] = Match.objects.filter(fixture_id=dict['fixtures'])
+
+
+    return render_to_response('filtermatchact.html',
+                              dict)
+
 
 #Funcion que permite cambiar las entradas vacias de las listas a 0
 def changeNone(lista, index):

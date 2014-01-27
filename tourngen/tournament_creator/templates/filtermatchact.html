@@ -26,6 +26,7 @@
     <tr>
         <th></th>
         <th></th>
+        <th></th>
     <th>
         Home
      </th>
@@ -41,17 +42,24 @@
 
 <form action="/match/success" method="get">
 <tr>
+<td>
+
+    <select name = "jornada">
+        {% for fixture in fixtures %}
+        <option value="{{partido.fixture_id}}">{{fixture.number}}</option>
+        {% endfor %}
+    </select>
+    </td>
 
 
-<td><input type ="hidden" name="jornada" value="{{partido.fixture_id}}"></input></td>
 
 
 
 <td><input type="hidden" name="partido_id" value="{{partido.match_id}}" size="1"></input></td>
 <td>{{partido.home}}</td>
-<td><input type="number" name="score_local"  size="1" value="{{partido.score_home}}"></input></td>
+<td><input type="hidden" name="score_local"  size="1" value="{{partido.score_home}}"></input></td>
 <td>{{partido.away}}</td>
-<td><input type="number" name="score_visita" size="1" value="{{partido.score_away}}"></input></td>
+<td><input type="hidden" name="score_visita" size="1" value="{{partido.score_away}}"></input></td>
 
 <td><input type ="submit" value="guardar"></input> </td>
 </tr>
