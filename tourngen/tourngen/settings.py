@@ -42,8 +42,6 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'tournament_creator',
     'registration',
-    'rulez',
-    'object_permissions',
     'guardian',
 )
 
@@ -80,7 +78,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'tourngen',
 	'USER': 'root',
-	'PASSWORD': 'password',
+	'PASSWORD': 'PokemonDigimon',
 	'HOST':'127.0.0.1',
 	'PORT': '3306', 
     }
