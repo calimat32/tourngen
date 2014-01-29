@@ -9,7 +9,6 @@ from tournament_creator.models import Tournament, Match
 from tournament_creator.models import Team
 from tournament_creator.forms import UserForm
 from django.contrib.auth.models import User
-from rbac.models import RBACRole
 from django.contrib.auth.models import Group, Permission
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.decorators import permission_required
