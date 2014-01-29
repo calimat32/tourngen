@@ -8,8 +8,6 @@ from django.core.urlresolvers import reverse_lazy
 from tournament_creator.models import Tournament, Match
 from tournament_creator.models import Team
 from tournament_creator.forms import UserForm
-from userroles.models import set_user_role
-
 from django.contrib.auth.models import User
 from rbac.models import RBACRole
 from django.contrib.auth.models import Group, Permission
