@@ -91,11 +91,7 @@ LOGIN_URL = reverse_lazy('login')
 LOGIN_REDIRECT_URL = reverse_lazy('login')
 LOGOUT_URL = reverse_lazy('logout')
 
-USER_ROLES = (
-	'tourncreator',
-	'scorefiller',
-	'readonly',
-)
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/

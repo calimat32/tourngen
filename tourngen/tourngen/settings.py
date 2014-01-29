@@ -63,8 +63,7 @@ WSGI_APPLICATION = 'tourngen.wsgi.application'
 
 AUTHENTICATION_BACKENDS = [
             'django.contrib.auth.backends.ModelBackend', # Django's default authbackend
-            'rulez.backends.ObjectPermissionBackend',
-            'object_permissions.backend.ObjectPermBackend',
+           
             'guardian.backends.ObjectPermissionBackend',
         ]
 
