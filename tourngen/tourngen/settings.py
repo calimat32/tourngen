@@ -43,6 +43,7 @@ INSTALLED_APPS = (
     'tournament_creator',
     'registration',
     'guardian',
+    'gunicron',
 )
 
 ACCOUNT_ACTIVATION_DAYS = 3
