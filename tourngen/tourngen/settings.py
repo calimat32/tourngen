@@ -77,8 +77,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'tourngen',
-	'USER': 'root',
-	'PASSWORD': 'password',
+	'USER': 'tourngen',
+	'PASSWORD': 'PokemonDigimon',
 	'HOST':'127.0.0.1',
 	'PORT': '3306', 
     }
