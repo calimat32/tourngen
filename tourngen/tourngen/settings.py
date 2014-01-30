@@ -84,6 +84,9 @@ DATABASES = {
     }
 }
 
+LOGGING = {
+    'version': 1,
+}
 
 from django.core.urlresolvers import reverse_lazy
 
