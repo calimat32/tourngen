@@ -43,7 +43,7 @@ INSTALLED_APPS = (
     'tournament_creator',
     'registration',
     'guardian',
-    'gunicron',
+    'gunicorn',
 )
 
 ACCOUNT_ACTIVATION_DAYS = 3
@@ -78,7 +78,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'tourngen',
 	'USER': 'root',
-	'PASSWORD': 'PokemonDigimon',
+	'PASSWORD': 'password',
 	'HOST':'127.0.0.1',
 	'PORT': '3306', 
     }
