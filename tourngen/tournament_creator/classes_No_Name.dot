@@ -1,0 +1,32 @@
+digraph "classes_No_Name" {
+charset="utf-8"
+rankdir=BT
+"2" [shape="record", label="{AuthUser|username : CharField\lfirst_name : CharField\llast_name : CharField\lis_active : IntegerField\lid : IntegerField\lis_superuser : IntegerField\lis_staff : IntegerField\llast_login : DateTimeField\lpassword : CharField\lemail : CharField\ldate_joined : DateTimeField\l|}"];
+"3" [shape="record", label="{Meta|db_table : unicode\lmanaged : bool\lpermissions : tuple\l|}"];
+"4" [shape="record", label="{Tournament|info : TextField\llast_updated : DateTimeField\lname : CharField\ldate_end : DateTimeField\ldate_start : DateTimeField\lhome_and_away : BooleanField\lactive : BooleanField\lpublic : BooleanField\ltournament_id : AutoField\l|}"];
+"5" [shape="record", label="{Meta|db_table : unicode\lmanaged : bool\lpermissions : tuple\l|}"];
+"6" [shape="record", label="{Fixture|info : TextField\llast_updated : DateTimeField\ltournament : ForeignKey\lnumber : IntegerField\lfixture_id : AutoField\lActive : BooleanField\l|}"];
+"7" [shape="record", label="{Meta|db_table : unicode\lmanaged : bool\l|}"];
+"8" [shape="record", label="{DjangoAdminLog|action_flag : IntegerField\laction_time : DateTimeField\lobject_repr : CharField\lobject_id : TextField\lchange_message : TextField\luser : ForeignKey\lcontent_type : ForeignKey\lid : IntegerField\l|}"];
+"9" [shape="record", label="{Meta|db_table : unicode\lmanaged : bool\l|}"];
+"10" [shape="record", label="{AuthGroup|id : IntegerField\lname : CharField\l|}"];
+"11" [shape="record", label="{Meta|db_table : unicode\lmanaged : bool\l|}"];
+"12" [shape="record", label="{AuthPermission|codename : CharField\lid : IntegerField\lcontent_type : ForeignKey\lname : CharField\l|}"];
+"13" [shape="record", label="{Meta|db_table : unicode\lmanaged : bool\l|}"];
+"14" [shape="record", label="{AuthUserUserPermissions|user : ForeignKey\lid : IntegerField\lpermission : ForeignKey\l|}"];
+"15" [shape="record", label="{Meta|db_table : unicode\lmanaged : bool\l|}"];
+"16" [shape="record", label="{Team|info : TextField\ltournament : ForeignKey\llast_updated : DateTimeField\lname : CharField\le_mail : CharField\lteam_id : AutoField\lactive : BooleanField\l|}"];
+"17" [shape="record", label="{Meta|db_table : unicode\lmanaged : bool\lpermissions : tuple\l|}"];
+"18" [shape="record", label="{Privilege|description : CharField\lprivilege_id : IntegerField\l|}"];
+"19" [shape="record", label="{Meta|db_table : unicode\lmanaged : bool\l|}"];
+"20" [shape="record", label="{AuthGroupPermissions|group : ForeignKey\lid : IntegerField\lpermission : ForeignKey\l|}"];
+"21" [shape="record", label="{Meta|db_table : unicode\lmanaged : bool\l|}"];
+"22" [shape="record", label="{DjangoSession|session_key : CharField\lsession_data : TextField\lexpire_date : DateTimeField\l|}"];
+"23" [shape="record", label="{Meta|db_table : unicode\lmanaged : bool\l|}"];
+"24" [shape="record", label="{DjangoContentType|model : CharField\lid : IntegerField\lname : CharField\lapp_label : CharField\l|}"];
+"25" [shape="record", label="{Meta|db_table : unicode\lmanaged : bool\l|}"];
+"26" [shape="record", label="{Match|info : TextField\llast_updated : DateTimeField\lmatch_id : AutoField\lplayed : BooleanField\lscore_away : IntegerField\laway : ForeignKey\lfixture : ForeignKey\ldate : DateTimeField\lactive : BooleanField\lhome : ForeignKey\lscore_home : IntegerField\l|}"];
+"27" [shape="record", label="{Meta|db_table : unicode\lmanaged : bool\lpermissions : tuple\l|}"];
+"28" [shape="record", label="{AuthUserGroups|group : ForeignKey\lid : IntegerField\luser : ForeignKey\l|}"];
+"29" [shape="record", label="{Meta|db_table : unicode\lmanaged : bool\l|}"];
+}

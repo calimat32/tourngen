@@ -112,11 +112,16 @@ def successact(request):
     #Obtiene el partido de la id al cual el usuario cambia y despues actualiza sus puntajes,
     #despues lo guarda en la base de datos.
     pprint.pprint(teamvisita)
-    insertarpartido(jorn1,teamlocal,teamvisita)
+
     #editarpartidos(idpartido, puntajelocal, puntajevisita,jorn1)
     dict = {'partidos': Match.objects.all(),
             'tournaments': Tournament.objects.filter(active="true")}
 
+    if (equipolocalid != equipovisitaid):
+        insertarpartido(jorn1,teamlocal,teamvisita)
+        dict['mensaje'] = "Tu partido fue insertado correctamente"
+    else:
+        dict['mensaje'] = "No se puede agregar un partido con el mismo equipo de local y visita"
 
     return render_to_response('matchsuccessact.html', dict)
 
