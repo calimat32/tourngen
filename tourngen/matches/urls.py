@@ -12,4 +12,6 @@ url(r'^success/$', 'matches.views.success'),
 url(r'^standings/$','matches.views.createstandings'),
 url(r'^filter/$', 'matches.views.filtermatches'),
 url(r'^filteract/$','matches.views.filtermatchesact'),
+url(r'^successact/$','matches.views.successact'),
+
 )

@@ -24,9 +24,7 @@
     <table>
 
     <tr>
-        <th></th>
-        <th></th>
-        <th></th>
+    <th></th>
     <th>
         Home
      </th>
@@ -38,43 +36,43 @@
 
 
 
-    {% for partido in partidos %}
 
-<form action="/match/success" method="get">
+
+<form action="/match/successact" method="get">
 <tr>
 <td>
 
     <select name = "jornada">
         {% for fixture in fixtures %}
-        <option value="{{partido.fixture_id}}">{{fixture.number}}</option>
+        <option value="{{fixture.fixture_id}}">{{fixture.number}}</option>
         {% endfor %}
     </select>
     </td>
 
+    <td>
+    <select name ="equipolocal" >
+        {% for team in teams %}
+        <option value = "{{team.team_id}}">{{team.name}}</option>
+        {% endfor %}
+    </select>
+</td>
+
+    <td> vs </td>
+
+ <td>
+    <select name ="equipovisita" >
+        {% for team in teams %}
+        <option value = "{{team.team_id}}">{{team.name}}</option>
+        {% endfor %}
+    </select>
+</td>
 
 
-
-
-<td><input type="hidden" name="partido_id" value="{{partido.match_id}}" size="1"></input></td>
-<td>{{partido.home}}</td>
-<td><input type="hidden" name="score_local"  size="1" value="{{partido.score_home}}"></input></td>
-<td>{{partido.away}}</td>
-<td><input type="hidden" name="score_visita" size="1" value="{{partido.score_away}}"></input></td>
-
-<td><input type ="submit" value="guardar"></input> </td>
+<td><input type ="submit" value="insertar"></input> </td>
 </tr>
 </form>
-{% endfor %}
 
-<form action ="/match/standings" method = get>
-    <input type="hidden" name="torneos" value="{{selected_tournament.tournament_id}}"></input>
-    {% for partido in partidos %}
-    <input type="hidden" name="partido_id" value="{{partido.match_id}}"></input>
-    <input type="hidden" name="score_local" value="{{partido.score_home}}"></input>
-    <input type="hidden" name="score_visita" value="{{partido.score_away}}"></input>
-{% endfor %}
-    <input type="submit" value="crear standings"></input>
-</form>
+
 
 </table>
 

@@ -20,6 +20,17 @@ def editarpartidos(id, scorehome, scoreaway,jorn):
     partido.fixture_id = jorn
     partido.save()
 
+#Funcion para insertar un partido
+def insertarpartido(jorn,elocal,evisita):
+    partido = Match()
+    partido.fixture_id = jorn
+    partido.home = elocal
+    partido.away = evisita
+    partido.score_home = 0
+    partido.score_away = 0
+    partido.played = False
+    partido.save()
+
 
 #Muestra el listado de todos los partidos creados
 @permission_required('tournament_creator.change_match')
@@ -89,6 +100,26 @@ def success(request):
             'tournaments': Tournament.objects.filter(active="true")}
 
     return render_to_response('matchsuccess.html', dict)
+
+#Muestra el template cuando un partido fue insertado exitosamente
+def successact(request):
+
+    equipolocalid = request.GET.get('equipolocal')
+    equipovisitaid = request.GET.get('equipovisita')
+    teamlocal = Team.objects.get(team_id=equipolocalid)
+    teamvisita = Team.objects.get(team_id=equipovisitaid)
+    jorn1 = request.GET.get('jornada')
+    #Obtiene el partido de la id al cual el usuario cambia y despues actualiza sus puntajes,
+    #despues lo guarda en la base de datos.
+    pprint.pprint(teamvisita)
+    insertarpartido(jorn1,teamlocal,teamvisita)
+    #editarpartidos(idpartido, puntajelocal, puntajevisita,jorn1)
+    dict = {'partidos': Match.objects.all(),
+            'tournaments': Tournament.objects.filter(active="true")}
+
+
+    return render_to_response('matchsuccessact.html', dict)
+
 
 #Filtra los torneos del los torneos publicos para el usuario visita
 def filterguestmatches(request):
