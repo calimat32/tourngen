@@ -11,6 +11,8 @@ import itertools
 
 # Create your views here.
 
+estado = True
+
 #Funcion para editar los partidos 
 def editarpartidos(id, scorehome, scoreaway,jorn):
     partido = Match.objects.get(match_id=id)
@@ -18,6 +20,7 @@ def editarpartidos(id, scorehome, scoreaway,jorn):
     partido.score_away = scoreaway
     partido.played = 1
     partido.fixture_id = jorn
+    partido.active = False
     partido.save()
 
 #Funcion para insertar un partido
@@ -95,9 +98,19 @@ def success(request):
     #Obtiene el partido de la id al cual el usuario cambia y despues actualiza sus puntajes,
     #despues lo guarda en la base de datos.
 
-    editarpartidos(idpartido, puntajelocal, puntajevisita,jorn1)
+
+
+
+
     dict = {'partidos': Match.objects.all(),
             'tournaments': Tournament.objects.filter(active="true")}
+
+
+
+    editarpartidos(idpartido, puntajelocal, puntajevisita,jorn1)
+
+
+
 
     return render_to_response('matchsuccess.html', dict)
 
@@ -140,7 +153,7 @@ def filterguestmatches(request):
             'tournid': request.get_full_path()[-1:]}
 
     equipos = Team.objects.filter(tournament_id=torneosfiltrados)
-    dict['partidos'] = Match.objects.filter(fixture_id=dict['fixtures'])
+    dict['partidos'] = Match.objects.filter(fixture_id=dict['fixtures'],active=True)
 
     return render_to_response('filterguestmatch.html',
                               dict)
@@ -149,16 +162,16 @@ def filtermymatches(request):
     myrequest = "salsa"
     torneosfiltrados = request.GET.get('torneos')
     dict = {'tournaments': Tournament.objects.filter(active="true"),
-            'numberofteams': Team.objects.filter(tournament_id=request.get_full_path()[-1:]).count(),
+            'numberofteams': Team.objects.filter(tournament_id=torneosfiltrados).count(),
             'teams': Team.objects.filter(tournament_id=torneosfiltrados),
             'fixtures': Fixture.objects.filter(tournament_id=torneosfiltrados),
             'unito': myrequest,
             'selected_tournament': Tournament.objects.get(tournament_id=torneosfiltrados),
 
-            'tournid': request.get_full_path()[-1:]}
+            'tournid': torneosfiltrados}
 
     equipos = Team.objects.filter(tournament_id=torneosfiltrados)
-    dict['partidos'] = Match.objects.filter(fixture_id=dict['fixtures'])
+    dict['partidos'] = Match.objects.filter(fixture_id=dict['fixtures'],active=True)
 
     return render_to_response('filterguestmatch.html',
                               dict)
@@ -169,16 +182,16 @@ def filtermatches(request):
     myrequest = "salsa"
     torneosfiltrados = request.GET.get('torneos')
     dict = {'tournaments': Tournament.objects.filter(active="true"),
-            'numberofteams': Team.objects.filter(tournament_id=request.get_full_path()[-1:]).count(),
+            'numberofteams': Team.objects.filter(tournament_id=torneosfiltrados).count(),
             'teams': Team.objects.filter(tournament_id=torneosfiltrados),
             'fixtures': Fixture.objects.filter(tournament_id=torneosfiltrados),
             'unito': myrequest,
             'selected_tournament': Tournament.objects.get(tournament_id=torneosfiltrados),
 
-            'tournid': request.get_full_path()[-1:]}
+            'tournid': torneosfiltrados}
 
     equipos = Team.objects.filter(tournament_id=torneosfiltrados)
-    dict['partidos'] = Match.objects.filter(fixture_id=dict['fixtures'])
+    dict['partidos'] = Match.objects.filter(fixture_id=dict['fixtures'],active=True)
 
 
     return render_to_response('filtermatch.html',
@@ -189,13 +202,13 @@ def filtermatchesact(request):
     myrequest = "salsa"
     torneosfiltrados = request.GET.get('torneos')
     dict = {'tournaments': Tournament.objects.filter(active="true"),
-            'numberofteams': Team.objects.filter(tournament_id=request.get_full_path()[-1:]).count(),
+            'numberofteams': Team.objects.filter(tournament_id=torneosfiltrados).count(),
             'teams': Team.objects.filter(tournament_id=torneosfiltrados),
             'fixtures': Fixture.objects.filter(tournament_id=torneosfiltrados),
             'unito': myrequest,
             'selected_tournament': Tournament.objects.get(tournament_id=torneosfiltrados),
 
-            'tournid': request.get_full_path()[-1:]}
+            'tournid': torneosfiltrados}
 
     equipos = Team.objects.filter(tournament_id=torneosfiltrados)
     dict['partidos'] = Match.objects.filter(fixture_id=dict['fixtures'])
