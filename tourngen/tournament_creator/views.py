@@ -25,7 +25,7 @@ import pprint
 class Registrarse(FormView):
     template_name = 'registration/registrarse.html'
     form_class = UserForm
-    success_url = reverse_lazy('register')
+    success_url = reverse_lazy('login')
 
     def form_valid(self,form):
         addtournament = Permission.objects.get(codename='add_tournament')
@@ -52,7 +52,7 @@ class Registrarse(FormView):
 #Agrega usuarios digitadores con un solo permiso para que depsues puedan ser agergados a los torneos que se necesiten
 
 class RegistrarDigitador(CreateView):
-    success_url = reverse_lazy('register_dataentry')
+    success_url = reverse_lazy('login')
     template_name = 'registration/registrardigitador.html'
     form_class = UserForm
 
@@ -72,7 +72,7 @@ class RegistrarDigitador(CreateView):
 
 #Funcion que crea usuario representante de equipo con un permiso asignado para diferenciar despues que es representante de equipo
 class RegistrarRepresentante(CreateView):
-    success_url = reverse_lazy('register_rep')
+    success_url = reverse_lazy('login')
     template_name = 'registration/registrardigitador.html'
     form_class = UserForm
 

@@ -23,6 +23,8 @@ class Fixture(models.Model):
     class Meta:
         managed = False
         db_table = 'Fixture'
+    def __unicode__(self):
+      return str(self.fixture_id)
 
 class Match(models.Model):
     match_id = models.AutoField(db_column='Match_id', primary_key=True) # Field name made lowercase.
@@ -43,6 +45,9 @@ class Match(models.Model):
             ("usario_digitador", "Can change a match if it is a data entry user"),
 
         )
+
+    def __unicode__(self):
+     return str(self.match_id)
 
 class Privilege(models.Model):
     privilege_id = models.IntegerField(db_column='Privilege_id', primary_key=True) # Field name made lowercase.
