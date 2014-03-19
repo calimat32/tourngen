@@ -8,7 +8,7 @@
 {{request.user.username}}
  {% block content %}
 
-{% if perms.tournament_creator.add_dataentry and perms.tournament_creator.usuario_rep %}
+{% if perms.tournament_creator.add_dataentry and perms.tournament_creator.add_usuario_rep %}
 
  <form method="POST"> {% csrf_token %}
     {{form.as_p}}
