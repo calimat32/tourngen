@@ -33,7 +33,7 @@ class Registrarse(FormView):
         changematch = Permission.objects.get(codename='change_match')
         addmatch = Permission.objects.get(codename='add_match')
         add_dataentry_user = Permission.objects.get(codename='add_dataentry')
-        add_representative = Permission.objects.get(codename='usuario_rep')
+        add_representative = Permission.objects.get(codename='add_usuario_rep')
         addteam = Permission.objects.get(codename='add_team')
         delete_team = Permission.objects.get(codename='delete_team')
 
@@ -123,7 +123,7 @@ def SuccessPermission(request):
 
 
 #Vista para asignar los permisos al usuario representante de equipo
-@permission_required('tournament_creator.usuario_rep')
+@permission_required('tournament_creator.add_usuario_rep')
 def AsignarPermisosRep(request):
     dict = {}
     dict['teams'] = get_objects_for_user(request.user,'tournament_creator.view_team')
@@ -140,7 +140,7 @@ def AsignarPermisosRep(request):
     return render_to_response('asignarpermisosrep.html',dict)
 
 #Vista de permisos fueron asignados correctamente para usuario representante
-@permission_required('tournament_creator.usuario_rep')
+@permission_required('tournament_creator.add_usuario_rep')
 def SuccessPermissionRep(request):
     idtorneo = request.GET.get('tournament')
     idusuario = request.GET.get('usuario')
